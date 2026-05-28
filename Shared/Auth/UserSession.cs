@@ -1,4 +1,4 @@
-namespace TruckApi.Shared;
+namespace TruckApi.Shared.Auth;
 
 public record UserSession(
     string Id,

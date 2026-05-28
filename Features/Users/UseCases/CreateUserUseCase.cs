@@ -2,7 +2,6 @@ using TruckApi.Features.Users.Dtos.CreateUser;
 using TruckApi.Features.Users.Errors;
 using TruckApi.Features.Users.Interface;
 using TruckApi.Infrastructure.Database.Entities;
-using TruckApi.Shared;
 
 namespace TruckApi.Features.Users.UseCases;
 

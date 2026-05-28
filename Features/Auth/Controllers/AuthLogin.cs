@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using TruckApi.Features.Auth.Dtos.Login;
 using TruckApi.Features.Auth.Errors;
 using TruckApi.Features.Auth.UseCases;
-using TruckApi.Shared;
 
 namespace TruckApi.Features.Auth.Controllers;
 

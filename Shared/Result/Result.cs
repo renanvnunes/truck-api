@@ -1,4 +1,4 @@
-namespace TruckApi.Shared;
+namespace TruckApi.Shared.Result;
 
 public abstract class Result<T>
 {

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using TruckApi.Features.Users.Dtos.GetUserById;
 using TruckApi.Features.Users.UseCases;
 using TruckApi.Infrastructure.Database.Entities;
-using TruckApi.Shared;
 
 namespace TruckApi.Features.Users.Controllers;
 

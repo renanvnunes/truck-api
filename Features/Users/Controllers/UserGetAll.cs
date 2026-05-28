@@ -41,6 +41,7 @@ public class UserGetAll : ICarterModule
             .WithSummary("Listar usuários")
             .WithDescription(
                 "Retorna usuários paginados com cursor. Use o campo `nextCursor` da resposta como parâmetro `cursor` na próxima requisição."
-            );
+            )
+            .RequireAuth();
     }
 }

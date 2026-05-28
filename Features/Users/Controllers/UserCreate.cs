@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using TruckApi.Features.Users.Dtos.CreateUser;
 using TruckApi.Features.Users.UseCases;
 using TruckApi.Infrastructure.Database.Entities;
-using TruckApi.Shared;
 
 namespace TruckApi.Features.Users.Controllers;
 
@@ -47,6 +46,7 @@ public class UserCreate : ICarterModule
                 "Cria um novo usuário no sistema. O whatsapp deve estar no formato internacional com 13 dígitos (ex: 5511999999999)."
             )
             .ProducesValidationProblem()
-            .AddEndpointFilter<ValidationFilter<CreateUserRequest>>();
+            .AddEndpointFilter<ValidationFilter<CreateUserRequest>>()
+            .RequireAuth(UserRole.Admin, UserRole.CompanyManager);
     }
 }

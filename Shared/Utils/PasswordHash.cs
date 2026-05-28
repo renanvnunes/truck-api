@@ -2,7 +2,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Konscious.Security.Cryptography;
 
-namespace TruckApi.Shared;
+namespace TruckApi.Shared.Utils;
 
 public static class PasswordHash
 {

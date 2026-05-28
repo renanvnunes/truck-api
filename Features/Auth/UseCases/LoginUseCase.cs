@@ -2,7 +2,6 @@ using TruckApi.Features.Auth.Dtos.Login;
 using TruckApi.Features.Auth.Errors;
 using TruckApi.Features.Auth.Services;
 using TruckApi.Features.Users.Interface;
-using TruckApi.Shared;
 
 namespace TruckApi.Features.Auth.UseCases;
 

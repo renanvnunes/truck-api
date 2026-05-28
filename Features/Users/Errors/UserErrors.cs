@@ -1,4 +1,3 @@
-using TruckApi.Shared;
 
 namespace TruckApi.Features.Users.Errors;
 

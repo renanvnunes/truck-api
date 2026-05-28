@@ -1,6 +1,5 @@
 using System.Text.Json;
 using StackExchange.Redis;
-using TruckApi.Shared;
 
 namespace TruckApi.Features.Auth.Services;
 

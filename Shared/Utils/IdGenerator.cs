@@ -1,4 +1,4 @@
-namespace TruckApi.Shared;
+namespace TruckApi.Shared.Utils;
 
 public static class IdGenerator
 {

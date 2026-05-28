@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace TruckApi.Shared;
+namespace TruckApi.Shared.Filters;
 
 public class ValidationFilter<T> : IEndpointFilter
 {

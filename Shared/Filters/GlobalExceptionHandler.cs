@@ -1,7 +1,7 @@
 using System.Text.Json;
 using Microsoft.AspNetCore.Diagnostics;
 
-namespace TruckApi.Shared;
+namespace TruckApi.Shared.Filters;
 
 public class GlobalExceptionHandler : IExceptionHandler
 {
