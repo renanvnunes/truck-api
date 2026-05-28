@@ -10,7 +10,7 @@ RUN dotnet publish -c Release -o /app --no-restore
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
 
-RUN adduser --disabled-password --no-create-home appuser
+RUN useradd --no-create-home --shell /bin/false appuser
 
 COPY --from=build /app .
 
