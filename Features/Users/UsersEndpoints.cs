@@ -9,26 +9,31 @@ public static class UsersEndpoints
     {
         var group = app.MapGroup("/users").WithTags("Users");
 
-        group.MapPost("/", async (CreateUserRequest request, CreateUserUseCase useCase) =>
-        {
-            try
-            {
-                var user = await useCase.ExecuteAsync(request);
-                var response = new CreateUserResponse(
-                    user.Id,
-                    user.FullName,
-                    user.Whatsapp,
-                    user.Role.ToString(),
-                    user.IsActive,
-                    user.CreatedAt
-                );
-                return Results.Created($"/users/{user.Id}", response);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return Results.Conflict(new { error = ex.Message });
-            }
-        }).AddEndpointFilter<ValidationFilter<CreateUserRequest>>();
+        group
+            .MapPost(
+                "/",
+                async (CreateUserRequest request, CreateUserUseCase useCase) =>
+                {
+                    try
+                    {
+                        var user = await useCase.ExecuteAsync(request);
+                        var response = new CreateUserResponse(
+                            user.Id,
+                            user.FullName,
+                            user.Whatsapp,
+                            user.Role.ToString(),
+                            user.IsActive,
+                            user.CreatedAt
+                        );
+                        return Results.Created($"/users/{user.Id}", response);
+                    }
+                    catch (InvalidOperationException ex)
+                    {
+                        return Results.Conflict(new { error = ex.Message });
+                    }
+                }
+            )
+            .AddEndpointFilter<ValidationFilter<CreateUserRequest>>();
 
         return app;
     }
