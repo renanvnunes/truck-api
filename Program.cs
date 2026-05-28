@@ -1,8 +1,12 @@
+using System.Text.Json;
 using System.Text.Json.Serialization;
+using Carter;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
-using TruckApi.Features.Users;
-using TruckApi.Features.Users.CreateUser;
+using Scalar.AspNetCore;
+using TruckApi.Features.Users.Interface;
+using TruckApi.Features.Users.Repository;
+using TruckApi.Features.Users.UseCases;
 using TruckApi.Infrastructure.Database;
 using TruckApi.Shared;
 
@@ -12,6 +16,8 @@ builder.Services.AddOpenApi();
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
+    options.SerializerOptions.PropertyNameCaseInsensitive = true;
     options.SerializerOptions.UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow;
 });
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -21,6 +27,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<CreateUserUseCase>();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
+builder.Services.AddCarter();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
@@ -31,9 +38,10 @@ app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+    app.MapScalarApiReference();
 }
 
 app.MapGet("/", () => "TruckApi is running.");
-app.MapUsersEndpoints();
+app.MapCarter();
 
 app.Run();
