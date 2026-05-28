@@ -25,14 +25,45 @@ public class UpdateUserUseCase(IUserRepository repository)
             }
         }
 
-        if (request.FullName is not null) user.FullName = request.FullName;
-        if (request.Whatsapp is not null) user.Whatsapp = request.Whatsapp;
-        if (request.Password is not null) user.Password = PasswordHash.Hash(request.Password);
-        if (request.Document is not null) user.Document = request.Document;
-        if (request.Age is not null) user.Age = request.Age;
-        if (request.Role is not null) user.Role = request.Role.Value;
-        if (request.Timezone is not null) user.Timezone = request.Timezone;
-        if (request.IsActive is not null) user.IsActive = request.IsActive.Value;
+        if (request.FullName is not null)
+        {
+            user.FullName = request.FullName;
+        }
+
+        if (request.Whatsapp is not null)
+        {
+            user.Whatsapp = request.Whatsapp;
+        }
+
+        if (request.Password is not null)
+        {
+            user.Password = PasswordHash.Hash(request.Password);
+        }
+
+        if (request.Document is not null)
+        {
+            user.Document = request.Document;
+        }
+
+        if (request.Age is not null)
+        {
+            user.Age = request.Age;
+        }
+
+        if (request.Role is not null)
+        {
+            user.Role = request.Role.Value;
+        }
+
+        if (request.Timezone is not null)
+        {
+            user.Timezone = request.Timezone;
+        }
+
+        if (request.IsActive is not null)
+        {
+            user.IsActive = request.IsActive.Value;
+        }
 
         user.UpdatedAt = DateTimeOffset.UtcNow;
 
