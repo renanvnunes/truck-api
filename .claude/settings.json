@@ -13,7 +13,9 @@
       "Read(//home/renan/.nuget/**)",
       "Bash(dotnet-reflect /home/renan/.nuget/packages/scalar.aspnetcore/2.14.14/lib/net10.0/Scalar.AspNetCore.dll)",
       "Bash(grep -E \"^[A-Z][a-zA-Z]+$\")",
-      "Bash(dotnet fsi *)"
+      "Bash(dotnet fsi *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://application-api-dotnet.nuykhx.easypanel.host/docs\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://application-api-dotnet.nuykhx.easypanel.host/openapi/v1.json\")"
     ]
   }
 }

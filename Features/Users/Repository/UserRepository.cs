@@ -19,13 +19,41 @@ public class UserRepository(AppDbContext db) : IUserRepository
         return await db.Users.AnyAsync(u => u.Whatsapp == whatsapp);
     }
 
-    public async Task<User[]> GetAllAsync()
+    public async Task<User[]> GetAllAsync(string? cursor, int limit)
     {
-        return await db.Users.ToArrayAsync();
+        var query = db.Users.AsQueryable();
+
+        if (cursor is not null)
+        {
+            query = query.Where(u => string.Compare(u.Id, cursor) > 0);
+        }
+
+        return await query.OrderBy(u => u.Id).Take(limit).ToArrayAsync();
     }
 
     public async Task<User?> GetByIdAsync(string id)
     {
         return await db.Users.FindAsync(id);
+    }
+
+    public async Task UpdateAsync(User user)
+    {
+        db.Users.Update(user);
+        await db.SaveChangesAsync();
+    }
+
+    public async Task RemoveAsync(string id)
+    {
+        var user = await db.Users.FindAsync(id);
+        if (user != null)
+        {
+            db.Users.Remove(user);
+            await db.SaveChangesAsync();
+        }
+    }
+
+    public async Task<bool> WhatsappExistsForOtherUserAsync(string whatsapp, string excludeId)
+    {
+        return await db.Users.AnyAsync(u => u.Whatsapp == whatsapp && u.Id != excludeId);
     }
 }
