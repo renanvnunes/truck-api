@@ -1,9 +1,15 @@
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace TruckApi.Infrastructure.Database.Entities;
 
-public enum UserRole { Admin, CompanyManager, CompanySupervisor, CompanyOperator }
+public enum UserRole
+{
+    Admin,
+    CompanyManager,
+    CompanySupervisor,
+    CompanyOperator,
+}
 
 [Table("users")]
 [Index(nameof(CompanyId), Name = "users_company_id_idx")]

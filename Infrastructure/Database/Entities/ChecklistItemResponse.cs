@@ -2,7 +2,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TruckApi.Infrastructure.Database.Entities;
 
-public enum ChecklistItemStatus { Ok, WithObservation, Failed }
+public enum ChecklistItemStatus
+{
+    Ok,
+    WithObservation,
+    Failed,
+}
 
 [Table("checklist_item_responses")]
 public class ChecklistItemResponse

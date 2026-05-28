@@ -1,13 +1,13 @@
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace TruckApi.Infrastructure.Database.Entities;
 
 public enum ChecklistResult
 {
-    Approved,                  // Aprovada para operação
-    ApprovedWithObservations,  // Aprovada com observações
-    Rejected                   // Reprovada — bloqueia uso
+    Approved, // Aprovada para operação
+    ApprovedWithObservations, // Aprovada com observações
+    Rejected, // Reprovada — bloqueia uso
 }
 
 [Table("checklists")]

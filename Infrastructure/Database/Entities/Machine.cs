@@ -1,26 +1,26 @@
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace TruckApi.Infrastructure.Database.Entities;
 
 public enum MachineType
 {
-    Excavator,       // Escavadeira
-    Grader,          // Patrol / Motoniveladora
-    Backhoe,         // Retroescavadeira
-    Tractor,         // Trator
+    Excavator, // Escavadeira
+    Grader, // Patrol / Motoniveladora
+    Backhoe, // Retroescavadeira
+    Tractor, // Trator
     Bulldozer,
-    Crane,           // Guindaste
-    Forklift,        // Empilhadeira
-    Truck,           // Caminhão
-    Other
+    Crane, // Guindaste
+    Forklift, // Empilhadeira
+    Truck, // Caminhão
+    Other,
 }
 
 public enum MachineStatus
 {
-    Active,            // Ativa
-    UnderMaintenance,  // Em manutenção
-    Stopped            // Parada
+    Active, // Ativa
+    UnderMaintenance, // Em manutenção
+    Stopped, // Parada
 }
 
 [Table("machines")]

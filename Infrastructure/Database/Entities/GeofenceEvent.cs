@@ -1,9 +1,13 @@
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace TruckApi.Infrastructure.Database.Entities;
 
-public enum GeofenceEventType { Enter, Exit }
+public enum GeofenceEventType
+{
+    Enter,
+    Exit,
+}
 
 [Table("geofence_events")]
 [Index(nameof(GeofenceId), Name = "geofence_events_geofence_id_idx")]

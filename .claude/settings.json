@@ -1,7 +1,14 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dotnet build *)"
+      "Bash(dotnet build *)",
+      "Bash(dotnet add *)",
+      "Bash(find /home/renan/.nuget/packages/nanoid -name \"*.dll\" | head -5)",
+      "Read(//home/renan/.nuget/packages/nanoid/**)",
+      "Bash(dotnet script *)",
+      "Bash(xargs cat)",
+      "Bash(dotnet restore *)",
+      "Bash(dotnet remove *)"
     ]
   }
 }

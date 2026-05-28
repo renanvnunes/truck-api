@@ -1,9 +1,13 @@
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace TruckApi.Infrastructure.Database.Entities;
 
-public enum MaintenanceType { Preventive, Corrective }
+public enum MaintenanceType
+{
+    Preventive,
+    Corrective,
+}
 
 [Table("maintenance_records")]
 [Index(nameof(MachineId), Name = "maintenance_records_machine_id_idx")]
