@@ -12,7 +12,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-app.UseHttpsRedirection();
+app.MapGet("/", () => "TruckApi is running.");
 
 app.Run();
 
