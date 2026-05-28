@@ -9,6 +9,7 @@ public interface IUserRepository
     Task<User[]> GetAllAsync(string? cursor, int limit);
 
     Task<User?> GetByIdAsync(string id);
+    Task<User?> GetByWhatsappAsync(string whatsapp);
 
     Task UpdateAsync(User user);
     Task RemoveAsync(string id);

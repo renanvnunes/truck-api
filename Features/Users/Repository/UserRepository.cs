@@ -36,6 +36,11 @@ public class UserRepository(AppDbContext db) : IUserRepository
         return await db.Users.FindAsync(id);
     }
 
+    public async Task<User?> GetByWhatsappAsync(string whatsapp)
+    {
+        return await db.Users.FirstOrDefaultAsync(u => u.Whatsapp == whatsapp);
+    }
+
     public async Task UpdateAsync(User user)
     {
         db.Users.Update(user);

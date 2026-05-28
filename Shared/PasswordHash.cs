@@ -28,8 +28,6 @@ public static class PasswordHash
 
         var hash = argon2.GetBytes(HashSize);
 
-        Console.WriteLine($"Password: {password}");
-
         // 2. Concatena o Salt e o Hash para poder salvar no banco em uma única string formatada
         // Formato padrão de mercado: $argon2id$v=19$m=65536,t=4,p=8$base64(salt)$base64(hash)
         var saltBase64 = Convert.ToBase64String(salt);
