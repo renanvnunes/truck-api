@@ -23,4 +23,9 @@ public class UserRepository(AppDbContext db) : IUserRepository
     {
         return await db.Users.ToArrayAsync();
     }
+
+    public async Task<User?> GetByIdAsync(string id)
+    {
+        return await db.Users.FindAsync(id);
+    }
 }

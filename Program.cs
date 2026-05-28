@@ -35,9 +35,14 @@ var app = builder.Build();
 
 app.UseExceptionHandler();
 
-if (app.Environment.IsDevelopment()) { }
 app.MapOpenApi();
-app.MapScalarApiReference();
+app.MapScalarApiReference(
+    "/docs",
+    options =>
+    {
+        options.Title = "TruckApi";
+    }
+);
 
 app.MapGet("/", () => "TruckApi is running.");
 app.MapCarter();
