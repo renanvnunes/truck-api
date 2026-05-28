@@ -1,0 +1,7 @@
+{
+  "dotnet.defaultSolution": "TruckApi.slnx",
+  "editor.formatOnSave": true,
+  "[csharp]": {
+    "editor.defaultFormatter": "csharpier.csharpier-vscode"
+  }
+}
