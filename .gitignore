@@ -1,7 +1,24 @@
-bin/
-obj/
-*.user
+# Build
+**/bin/
+**/obj/
+
+# Visual Studio
 .vs/
-appsettings.Development.json
-appsettings.*.json
-!appsettings.json
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# VS Code
+.vscode/
+
+# Configs de ambiente
+**/appsettings.Development.json
+**/appsettings.*.json
+!**/appsettings.json
+
+# Logs
+*.log
+
+# Publicação
+**/publish/

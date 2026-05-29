@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="TruckApi.Tests/TruckApi.Tests.csproj" />
+  <Project Path="TruckApi/TruckApi.csproj" />
+</Solution>

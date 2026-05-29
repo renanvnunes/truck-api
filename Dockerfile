@@ -1,11 +1,11 @@
 FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 
-COPY TruckApi.csproj .
-RUN dotnet restore
+COPY TruckApi/TruckApi.csproj TruckApi/
+RUN dotnet restore TruckApi/TruckApi.csproj
 
-COPY . .
-RUN dotnet publish -c Release -o /app --no-restore
+COPY TruckApi/ TruckApi/
+RUN dotnet publish TruckApi/TruckApi.csproj -c Release -o /app --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
