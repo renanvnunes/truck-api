@@ -1,9 +1,14 @@
 using Carter;
 using Microsoft.AspNetCore.HttpOverrides;
 using Scalar.AspNetCore;
+using Serilog;
 using TruckApi.Extensions;
 
+Log.Logger = new LoggerConfiguration().WriteTo.Console().CreateBootstrapLogger();
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration));
 
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddAuth(builder.Configuration);
@@ -18,6 +23,7 @@ app.UseForwardedHeaders(
         ForwardedHeaders = ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedHost,
     }
 );
+app.UseSerilogRequestLogging();
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();

@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Diagnostics;
 
 namespace TruckApi.Shared.Filters;
 
-public class GlobalExceptionHandler : IExceptionHandler
+public class GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger) : IExceptionHandler
 {
     public async ValueTask<bool> TryHandleAsync(
         HttpContext context,
@@ -27,6 +27,14 @@ public class GlobalExceptionHandler : IExceptionHandler
             BadHttpRequestException ex => (ex.StatusCode, "Requisição inválida."),
             _ => (StatusCodes.Status500InternalServerError, "Erro interno no servidor."),
         };
+
+        if (status == StatusCodes.Status500InternalServerError)
+            logger.LogError(
+                exception,
+                "Unhandled exception on {Method} {Path}",
+                context.Request.Method,
+                context.Request.Path
+            );
 
         context.Response.StatusCode = status;
         await context.Response.WriteAsJsonAsync(new { error = message }, ct);
