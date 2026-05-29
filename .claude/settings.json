@@ -1,4 +1,19 @@
 {
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.file_path // \"\"' | { read -r f; echo \"$f\" | grep -q '\\.cs$' && dotnet build /home/renan/Documentos/Renan/truck/TruckApi/TruckApi.csproj --no-restore -v q; } 2>/dev/null || true",
+            "statusMessage": "Building TruckApi...",
+            "timeout": 60
+          }
+        ]
+      }
+    ]
+  },
   "permissions": {
     "allow": [
       "Bash(dotnet build *)",

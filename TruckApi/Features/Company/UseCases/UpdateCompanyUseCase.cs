@@ -12,7 +12,9 @@ public class UpdateCompanyUseCase(ICompanyRepository repository)
         var company = await repository.GetByIdAsync(id);
 
         if (company is null)
+        {
             return Result<CompanyEntity>.Failure(CompanyErrors.NotFound);
+        }
 
         if (request.Name is not null && request.Name != company.Name)
         {

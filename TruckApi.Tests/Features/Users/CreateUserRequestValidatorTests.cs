@@ -9,18 +9,16 @@ public class CreateUserRequestValidatorTests
 {
     private readonly CreateUserRequestValidator _validator = new();
 
-    private static CreateUserRequest ValidAdmin() => new(
-        FullName: "João Silva",
-        Whatsapp: "5511999999999",
-        Role: UserRole.Admin
-    );
+    private static CreateUserRequest ValidAdmin() =>
+        new(FullName: "João Silva", Whatsapp: "5511999999999", Role: UserRole.Admin);
 
-    private static CreateUserRequest ValidOperator() => new(
-        FullName: "Carlos Souza",
-        Whatsapp: "5511888888888",
-        Role: UserRole.CompanyOperator,
-        CompanyId: "company_123"
-    );
+    private static CreateUserRequest ValidOperator() =>
+        new(
+            FullName: "Carlos Souza",
+            Whatsapp: "5511888888888",
+            Role: UserRole.CompanyOperator,
+            CompanyId: "company_123"
+        );
 
     // --- FullName ---
 
@@ -55,7 +53,7 @@ public class CreateUserRequestValidatorTests
     }
 
     [Theory]
-    [InlineData("551199999999")]   // 12 dígitos
+    [InlineData("551199999999")] // 12 dígitos
     [InlineData("55119999999999")] // 14 dígitos
     public void Whatsapp_WhenNot13Digits_ShouldFail(string whatsapp)
     {
@@ -80,7 +78,7 @@ public class CreateUserRequestValidatorTests
     }
 
     [Theory]
-    [InlineData("abc")]                              // muito curto
+    [InlineData("abc")] // muito curto
     [InlineData("aaaaabbbbbcccccdddddeeeeeffffff1")] // 31 chars
     public void Password_WhenOutOfRange_ShouldFail(string password)
     {
@@ -128,7 +126,8 @@ public class CreateUserRequestValidatorTests
         var request = ValidAdmin() with { CompanyId = "company_123" };
         var result = _validator.TestValidate(request);
 
-        result.ShouldHaveValidationErrorFor(x => x.CompanyId)
+        result
+            .ShouldHaveValidationErrorFor(x => x.CompanyId)
             .WithErrorMessage("Admin não pode pertencer a uma empresa.");
     }
 
@@ -148,7 +147,8 @@ public class CreateUserRequestValidatorTests
         var request = ValidOperator() with { Role = role, CompanyId = null };
         var result = _validator.TestValidate(request);
 
-        result.ShouldHaveValidationErrorFor(x => x.CompanyId)
+        result
+            .ShouldHaveValidationErrorFor(x => x.CompanyId)
             .WithErrorMessage("CompanyId é obrigatório para este perfil.");
     }
 

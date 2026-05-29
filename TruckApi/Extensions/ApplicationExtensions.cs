@@ -8,6 +8,7 @@ using TruckApi.Features.Company.UseCases;
 using TruckApi.Features.Users.Interfaces;
 using TruckApi.Features.Users.Repository;
 using TruckApi.Features.Users.UseCases;
+using TruckApi.Shared.Utils;
 
 namespace TruckApi.Extensions;
 
@@ -18,6 +19,7 @@ public static class ApplicationExtensions
         services.AddOpenApi();
         services.ConfigureHttpJsonOptions(options =>
         {
+            options.SerializerOptions.Converters.Add(new TrimmingStringJsonConverter());
             options.SerializerOptions.Converters.Add(new JsonStringEnumConverter());
             options.SerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
             options.SerializerOptions.PropertyNameCaseInsensitive = true;

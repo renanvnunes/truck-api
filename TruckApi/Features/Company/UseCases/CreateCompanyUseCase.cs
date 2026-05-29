@@ -10,7 +10,9 @@ public class CreateCompanyUseCase(ICompanyRepository repository)
     public async Task<Result<CompanyEntity>> ExecuteAsync(CreateCompanyRequest request)
     {
         if (await repository.NameExistsAsync(request.Name))
+        {
             return Result<CompanyEntity>.Failure(CompanyErrors.NameAlreadyExists);
+        }
 
         var now = DateTimeOffset.UtcNow;
 
