@@ -2,6 +2,9 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Carter;
 using FluentValidation;
+using TruckApi.Features.Company.Interface;
+using TruckApi.Features.Company.Repository;
+using TruckApi.Features.Company.UseCases;
 using TruckApi.Features.Users.Interface;
 using TruckApi.Features.Users.Repository;
 using TruckApi.Features.Users.UseCases;
@@ -20,6 +23,13 @@ public static class ApplicationExtensions
             options.SerializerOptions.PropertyNameCaseInsensitive = true;
             options.SerializerOptions.UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow;
         });
+
+        services.AddScoped<ICompanyRepository, CompanyRepository>();
+        services.AddScoped<CreateCompanyUseCase>();
+        services.AddScoped<GetAllCompaniesUseCase>();
+        services.AddScoped<GetCompanyByIdUseCase>();
+        services.AddScoped<UpdateCompanyUseCase>();
+        services.AddScoped<DeleteCompanyUseCase>();
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<GetAllUsersUseCase>();

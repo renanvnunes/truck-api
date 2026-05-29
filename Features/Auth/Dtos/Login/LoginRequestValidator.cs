@@ -10,6 +10,6 @@ public class LoginRequestValidator : AbstractValidator<LoginRequest>
             .NotEmpty()
             .Length(13)
             .WithMessage("Whatsapp deve conter exatamente 13 dígitos. Exemplo: 5511999999999");
-        RuleFor(x => x.Password).NotEmpty();
+        RuleFor(x => x.Password).Length(6, 30).NotEmpty();
     }
 }
