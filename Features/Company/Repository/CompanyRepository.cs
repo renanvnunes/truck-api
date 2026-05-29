@@ -54,4 +54,9 @@ public class CompanyRepository(AppDbContext db) : ICompanyRepository
     {
         return await db.Companies.AnyAsync(c => c.Name == name && c.Id != excludeId);
     }
+
+    public async Task<bool> ExistsAsync(string id)
+    {
+        return await db.Companies.AnyAsync(c => c.Id == id);
+    }
 }

@@ -10,5 +10,6 @@ public interface ICompanyRepository
     Task<CompanyEntity?> GetByIdAsync(string id);
     Task UpdateAsync(CompanyEntity company);
     Task RemoveAsync(string id);
+    Task<bool> ExistsAsync(string id);
     Task<bool> NameExistsForOtherCompanyAsync(string name, string excludeId);
 }

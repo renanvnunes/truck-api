@@ -30,6 +30,7 @@ public class UserCreate : ICarterModule
                                 user.FullName,
                                 user.Whatsapp,
                                 user.Role.ToString(),
+                                user.CompanyId,
                                 user.IsActive,
                                 user.CreatedAt
                             )

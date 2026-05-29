@@ -1,3 +1,5 @@
+using TruckApi.Features.Company.Errors;
+using TruckApi.Features.Company.Interface;
 using TruckApi.Features.Users.Dtos.CreateUser;
 using TruckApi.Features.Users.Errors;
 using TruckApi.Features.Users.Interface;
@@ -5,13 +7,22 @@ using TruckApi.Infrastructure.Database.Entities;
 
 namespace TruckApi.Features.Users.UseCases;
 
-public class CreateUserUseCase(IUserRepository repository)
+public class CreateUserUseCase(IUserRepository repository, ICompanyRepository companyRepository)
 {
     public async Task<Result<User>> ExecuteAsync(CreateUserRequest request)
     {
         if (await repository.WhatsappExistsAsync(request.Whatsapp))
         {
             return Result<User>.Failure(UserErrors.WhatsappAlreadyExists);
+        }
+
+        if (request.CompanyId is not null)
+        {
+            var companyExists = await companyRepository.ExistsAsync(request.CompanyId);
+            if (!companyExists)
+            {
+                return Result<User>.Failure(CompanyErrors.NotFound);
+            }
         }
 
         var now = DateTimeOffset.UtcNow;
