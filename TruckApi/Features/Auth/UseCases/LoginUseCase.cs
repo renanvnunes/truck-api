@@ -2,13 +2,14 @@ using TruckApi.Features.Auth.Dtos.Login;
 using TruckApi.Features.Auth.Errors;
 using TruckApi.Features.Auth.Services;
 using TruckApi.Features.Users.Interfaces;
+using TruckApi.Infrastructure.Cache;
 
 namespace TruckApi.Features.Auth.UseCases;
 
 public class LoginUseCase(
     IUserRepository userRepository,
     ITokenService tokenService,
-    ISessionService sessionService
+    ICacheService cache
 )
 {
     public async Task<Result<LoginResponse>> ExecuteAsync(LoginRequest request)
@@ -36,7 +37,7 @@ public class LoginUseCase(
             user.IsActive
         );
 
-        await sessionService.SaveAsync(user.Id, session, expiration);
+        await cache.SetAsync($"session:{user.Id}", session, expiration);
 
         return Result<LoginResponse>.Success(new LoginResponse(token, session));
     }

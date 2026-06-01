@@ -1,12 +1,22 @@
-
 namespace TruckApi.Features.Auth.Errors;
 
 public static class AuthErrors
 {
     public static readonly Error InvalidCredentials = new(
         "Auth.InvalidCredentials",
-        "Whatsapp ou senha incorretos."
+        "Whatsapp ou senha incorretos.",
+        StatusCodes.Status401Unauthorized
     );
 
-    public static readonly Error UserInactive = new("Auth.UserInactive", "Usuário inativo.");
+    public static readonly Error UserNotFound = new(
+        "Auth.UserNotFound",
+        "Usuário não encontrado.",
+        StatusCodes.Status404NotFound
+    );
+
+    public static readonly Error UserInactive = new(
+        "Auth.UserInactive",
+        "Usuário inativo.",
+        StatusCodes.Status403Forbidden
+    );
 }

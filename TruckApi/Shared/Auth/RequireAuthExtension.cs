@@ -1,6 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using TruckApi.Features.Auth.Services;
+using TruckApi.Infrastructure.Cache;
 using TruckApi.Infrastructure.Database.Entities;
 using TruckApi.Shared.Result;
 
@@ -30,8 +30,8 @@ public static class RequireAuthExtension
                         return TypedResults.Unauthorized();
                     }
 
-                    var sessionService = http.RequestServices.GetRequiredService<ISessionService>();
-                    var session = await sessionService.GetAsync(userId);
+                    var cache = http.RequestServices.GetRequiredService<ICacheService>();
+                    var session = await cache.GetAsync<UserSession>($"session:{userId}");
 
                     if (session is null)
                     {

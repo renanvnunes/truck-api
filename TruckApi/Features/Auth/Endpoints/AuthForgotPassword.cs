@@ -5,23 +5,21 @@ using TruckApi.Features.Auth.UseCases;
 
 namespace TruckApi.Features.Auth.Endpoints;
 
-public class AuthLogin : ICarterModule
+public class AuthForgotPassword : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
         app.MapGroup("/auth")
             .WithTags("Auth")
             .MapPost(
-                "/login",
-                (LoginRequest request, LoginUseCase useCase) =>
+                "/forgot-password",
+                (ForgotPasswordRequest request, ForgotPasswordUseCase useCase) =>
                     useCase.ExecuteAsync(request).ToHttpResultAsync()
             )
-            .WithSummary("Login")
-            .WithDescription(
-                "Autentica o usuário com whatsapp e senha. Retorna um JWT e os dados da sessão."
-            )
+            .WithSummary("Recuperação de senha")
+            .WithDescription("Envia um código de redefinição de senha para o WhatsApp do usuário.")
             .ProducesValidationProblem()
-            .AddEndpointFilter<ValidationFilter<LoginRequest>>()
+            .AddEndpointFilter<ValidationFilter<ForgotPasswordRequest>>()
             .RequireRateLimiting(RateLimitExtensions.Policy.Login);
     }
 }

@@ -1,6 +1,4 @@
-using System.Diagnostics;
 using Carter;
-using Microsoft.AspNetCore.Http.HttpResults;
 using TruckApi.Features.Users.Dtos.CreateUser;
 using TruckApi.Features.Users.UseCases;
 using TruckApi.Infrastructure.Database.Entities;
@@ -15,32 +13,19 @@ public class UserCreate : ICarterModule
             .WithTags("Users")
             .MapPost(
                 "/",
-                async Task<Results<Created<CreateUserResponse>, Conflict<ErrorResponse>>> (
-                    CreateUserRequest request,
-                    CreateUserUseCase useCase
-                ) =>
-                {
-                    // nunca expõe o hash da senha na resposta
-                    return await useCase.ExecuteAsync(request) switch
-                    {
-                        Result<User>.Ok { Value: var user } => TypedResults.Created(
-                            $"/users/{user.Id}",
-                            new CreateUserResponse(
-                                user.Id,
-                                user.FullName,
-                                user.Whatsapp,
-                                user.Role.ToString(),
-                                user.CompanyId,
-                                user.IsActive,
-                                user.CreatedAt
-                            )
-                        ),
-                        Result<User>.Fail { Error: var error } => TypedResults.Conflict(
-                            new ErrorResponse(error.Code, error.Message)
-                        ),
-                        _ => throw new UnreachableException(),
-                    };
-                }
+                (CreateUserRequest request, CreateUserUseCase useCase) =>
+                    useCase.ExecuteAsync(request).ToCreatedAsync(user => (
+                        $"/users/{user.Id}",
+                        new CreateUserResponse(
+                            user.Id,
+                            user.FullName,
+                            user.Whatsapp,
+                            user.Role.ToString(),
+                            user.CompanyId,
+                            user.IsActive,
+                            user.CreatedAt
+                        )
+                    ))
             )
             .WithSummary("Criar usuário")
             .WithDescription(

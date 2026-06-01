@@ -1,10 +1,6 @@
-using System.Diagnostics;
 using Carter;
-using Microsoft.AspNetCore.Http.HttpResults;
 using TruckApi.Features.Users.Dtos.UpdateUser;
-using TruckApi.Features.Users.Errors;
 using TruckApi.Features.Users.UseCases;
-using TruckApi.Infrastructure.Database.Entities;
 
 namespace TruckApi.Features.Users.Endpoints;
 
@@ -16,34 +12,17 @@ public class UserUpdate : ICarterModule
             .WithTags("Users")
             .MapPatch(
                 "/{id}",
-                async Task<
-                    Results<
-                        Ok<UpdateUserResponse>,
-                        NotFound<ErrorResponse>,
-                        Conflict<ErrorResponse>
-                    >
-                > (string id, UpdateUserRequest request, UpdateUserUseCase useCase) =>
-                {
-                    return await useCase.ExecuteAsync(id, request) switch
-                    {
-                        Result<User>.Ok { Value: var user } => TypedResults.Ok(
-                            new UpdateUserResponse(
-                                user.Id,
-                                user.FullName,
-                                user.Whatsapp,
-                                user.Role.ToString(),
-                                user.IsActive,
-                                user.UpdatedAt
-                            )
-                        ),
-                        Result<User>.Fail { Error: var error } when error == UserErrors.NotFound =>
-                            TypedResults.NotFound(new ErrorResponse(error.Code, error.Message)),
-                        Result<User>.Fail { Error: var error } => TypedResults.Conflict(
-                            new ErrorResponse(error.Code, error.Message)
-                        ),
-                        _ => throw new UnreachableException(),
-                    };
-                }
+                (string id, UpdateUserRequest request, UpdateUserUseCase useCase) =>
+                    useCase.ExecuteAsync(id, request).ToHttpResultAsync(user =>
+                        new UpdateUserResponse(
+                            user.Id,
+                            user.FullName,
+                            user.Whatsapp,
+                            user.Role.ToString(),
+                            user.IsActive,
+                            user.UpdatedAt
+                        )
+                    )
             )
             .WithSummary("Atualizar usuário")
             .WithDescription(

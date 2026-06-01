@@ -1,7 +1,4 @@
-using System.Diagnostics;
 using Carter;
-using Microsoft.AspNetCore.Http.HttpResults;
-using TruckApi.Features.Users.Errors;
 using TruckApi.Features.Users.UseCases;
 using TruckApi.Infrastructure.Database.Entities;
 
@@ -15,20 +12,8 @@ public class UserDelete : ICarterModule
             .WithTags("Users")
             .MapDelete(
                 "/{id}",
-                async Task<Results<NoContent, NotFound<ErrorResponse>>> (
-                    string id,
-                    DeleteUserUseCase useCase
-                ) =>
-                {
-                    return await useCase.ExecuteAsync(id) switch
-                    {
-                        Result<User>.Ok => TypedResults.NoContent(),
-                        Result<User>.Fail { Error: var error } => TypedResults.NotFound(
-                            new ErrorResponse(error.Code, error.Message)
-                        ),
-                        _ => throw new UnreachableException(),
-                    };
-                }
+                (string id, DeleteUserUseCase useCase) =>
+                    useCase.ExecuteAsync(id).ToNoContentAsync()
             )
             .WithSummary("Remover usuário")
             .WithDescription("Remove permanentemente um usuário do sistema.");
