@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using Carter;
 using Microsoft.AspNetCore.Http.HttpResults;
+using TruckApi.Extensions;
 using TruckApi.Features.Auth.Dtos.Login;
 using TruckApi.Features.Auth.Errors;
 using TruckApi.Features.Auth.UseCases;
@@ -43,6 +44,7 @@ public class AuthLogin : ICarterModule
                 "Autentica o usuário com whatsapp e senha. Retorna um JWT e os dados da sessão."
             )
             .ProducesValidationProblem()
-            .AddEndpointFilter<ValidationFilter<LoginRequest>>();
+            .AddEndpointFilter<ValidationFilter<LoginRequest>>()
+            .RequireRateLimiting(RateLimitExtensions.Policy.Login);
     }
 }

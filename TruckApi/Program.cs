@@ -13,6 +13,7 @@ builder.Host.UseSerilog((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddCorsPolicy(builder.Configuration);
+builder.Services.AddRateLimitPolicy(builder.Configuration);
 builder.Services.AddApplication();
 
 var app = builder.Build();
@@ -24,6 +25,7 @@ app.UseForwardedHeaders(
     }
 );
 app.UseSerilogRequestLogging();
+app.UseRateLimiter();
 app.UseCors();
 app.UseAuthentication();
 app.UseAuthorization();
