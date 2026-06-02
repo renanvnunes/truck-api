@@ -1,5 +1,4 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Identity.Data;
 
 namespace TruckApi.Features.Auth.Dtos.ForgotPassword;
 
