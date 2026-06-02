@@ -1,6 +1,6 @@
 using Carter;
 using TruckApi.Extensions;
-using TruckApi.Features.Auth.Dtos.Login;
+using TruckApi.Features.Auth.Dtos.ForgotPassword;
 using TruckApi.Features.Auth.UseCases;
 
 namespace TruckApi.Features.Auth.Endpoints;

@@ -14,18 +14,22 @@ public class UserCreate : ICarterModule
             .MapPost(
                 "/",
                 (CreateUserRequest request, CreateUserUseCase useCase) =>
-                    useCase.ExecuteAsync(request).ToCreatedAsync(user => (
-                        $"/users/{user.Id}",
-                        new CreateUserResponse(
-                            user.Id,
-                            user.FullName,
-                            user.Whatsapp,
-                            user.Role.ToString(),
-                            user.CompanyId,
-                            user.IsActive,
-                            user.CreatedAt
+                    useCase
+                        .ExecuteAsync(request)
+                        .ToCreatedAsync(user =>
+                            (
+                                $"/users/{user.Id}",
+                                new CreateUserResponse(
+                                    user.Id,
+                                    user.FullName,
+                                    user.Whatsapp,
+                                    user.Role.ToString(),
+                                    user.CompanyId,
+                                    user.IsActive,
+                                    user.CreatedAt
+                                )
+                            )
                         )
-                    ))
             )
             .WithSummary("Criar usuário")
             .WithDescription(

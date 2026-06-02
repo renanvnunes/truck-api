@@ -19,4 +19,10 @@ public static class AuthErrors
         "Usuário inativo.",
         StatusCodes.Status403Forbidden
     );
+
+    public static readonly Error ForgotPasswordCooldown = new(
+        "Auth.ForgotPasswordCooldown",
+        "Aguarde 30 segundos antes de solicitar um novo código.",
+        StatusCodes.Status429TooManyRequests
+    );
 }

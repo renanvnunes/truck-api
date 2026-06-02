@@ -19,6 +19,12 @@ public class CacheService(IConnectionMultiplexer redis) : ICacheService
         return value.IsNull ? default : JsonSerializer.Deserialize<T>((string)value!);
     }
 
+    public async Task<bool> ExistsAsync(string key)
+    {
+        var db = redis.GetDatabase();
+        return await db.KeyExistsAsync(key);
+    }
+
     public async Task DeleteAsync(string key)
     {
         var db = redis.GetDatabase();

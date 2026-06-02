@@ -38,6 +38,7 @@ public static class AuthExtensions
         services.AddScoped<ICurrentUser, CurrentUser>();
         services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<LoginUseCase>();
+        services.AddScoped<ForgotPasswordUseCase>();
 
         return services;
     }

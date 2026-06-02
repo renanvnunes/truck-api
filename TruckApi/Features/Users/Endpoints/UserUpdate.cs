@@ -13,16 +13,16 @@ public class UserUpdate : ICarterModule
             .MapPatch(
                 "/{id}",
                 (string id, UpdateUserRequest request, UpdateUserUseCase useCase) =>
-                    useCase.ExecuteAsync(id, request).ToHttpResultAsync(user =>
-                        new UpdateUserResponse(
+                    useCase
+                        .ExecuteAsync(id, request)
+                        .ToHttpResultAsync(user => new UpdateUserResponse(
                             user.Id,
                             user.FullName,
                             user.Whatsapp,
                             user.Role.ToString(),
                             user.IsActive,
                             user.UpdatedAt
-                        )
-                    )
+                        ))
             )
             .WithSummary("Atualizar usuário")
             .WithDescription(

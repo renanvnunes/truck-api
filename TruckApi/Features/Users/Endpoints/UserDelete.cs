@@ -1,6 +1,5 @@
 using Carter;
 using TruckApi.Features.Users.UseCases;
-using TruckApi.Infrastructure.Database.Entities;
 
 namespace TruckApi.Features.Users.Endpoints;
 

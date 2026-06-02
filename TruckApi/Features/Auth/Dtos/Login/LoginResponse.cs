@@ -1,4 +1,3 @@
-
 namespace TruckApi.Features.Auth.Dtos.Login;
 
 /// <summary>Resposta do login com token e dados do usuário autenticado.</summary>
