@@ -14,4 +14,6 @@ public interface IUserRepository
     Task UpdateAsync(User user);
     Task RemoveAsync(string id);
     Task<bool> WhatsappExistsForOtherUserAsync(string whatsapp, string excludeId);
+
+    Task UpdatePasswordAsync(string userId, string newPasswordHash);
 }

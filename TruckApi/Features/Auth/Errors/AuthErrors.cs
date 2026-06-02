@@ -25,4 +25,10 @@ public static class AuthErrors
         "Aguarde 30 segundos antes de solicitar um novo código.",
         StatusCodes.Status429TooManyRequests
     );
+
+    public static readonly Error InvalidVerificationCode = new(
+        "Auth.InvalidVerificationCode",
+        "Código de verificação inválido.",
+        StatusCodes.Status400BadRequest
+    );
 }

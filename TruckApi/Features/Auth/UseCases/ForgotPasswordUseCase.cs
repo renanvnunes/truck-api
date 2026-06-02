@@ -26,14 +26,16 @@ public class ForgotPasswordUseCase(IUserRepository userRepository, ICacheService
         var cooldownKey = $"{CooldownKeyPrefix}{request.Whatsapp}";
 
         if (await cacheService.ExistsAsync(cooldownKey))
+        {
             return Result<ForgotPasswordResponse>.Failure(AuthErrors.ForgotPasswordCooldown);
+        }
 
         var resetCode = NumberGenerator.New(6);
 
         await Task.WhenAll(
             cacheService.SetAsync(
                 $"{CodeKeyPrefix}{request.Whatsapp}",
-                resetCode,
+                new PasswordResetCache(user.Id, resetCode),
                 TimeSpan.FromSeconds(ExpiresInSeconds)
             ),
             cacheService.SetAsync(

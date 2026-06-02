@@ -5,7 +5,7 @@ using TruckApi.Features.Auth.UseCases;
 
 namespace TruckApi.Features.Auth.Endpoints;
 
-public class AuthLogin : ICarterModule
+public class Login : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {

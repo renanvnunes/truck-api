@@ -61,4 +61,16 @@ public class UserRepository(AppDbContext db) : IUserRepository
     {
         return await db.Users.AnyAsync(u => u.Whatsapp == whatsapp && u.Id != excludeId);
     }
+
+    public async Task UpdatePasswordAsync(string userId, string newPasswordHash)
+    {
+        var user = await db.Users.FindAsync(userId);
+        if (user != null)
+        {
+            user.Password = newPasswordHash;
+            user.UpdatedAt = DateTimeOffset.UtcNow;
+            db.Users.Update(user);
+            await db.SaveChangesAsync();
+        }
+    }
 }

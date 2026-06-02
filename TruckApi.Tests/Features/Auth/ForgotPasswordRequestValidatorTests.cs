@@ -20,7 +20,7 @@ public class ForgotPasswordRequestValidatorTests
     }
 
     [Theory]
-    [InlineData("551199999999")]   // 12 dígitos
+    [InlineData("551199999999")] // 12 dígitos
     [InlineData("55119999999999")] // 14 dígitos
     public void Whatsapp_WhenNot13Digits_ShouldFail(string whatsapp)
     {
