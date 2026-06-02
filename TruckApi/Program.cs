@@ -15,6 +15,7 @@ builder.Services.AddAuth(builder.Configuration);
 builder.Services.AddCorsPolicy(builder.Configuration);
 builder.Services.AddRateLimitPolicy(builder.Configuration);
 builder.Services.AddApplication();
+builder.Services.AddAudit(builder.Configuration);
 
 var app = builder.Build();
 
