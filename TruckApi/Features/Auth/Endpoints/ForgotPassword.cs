@@ -20,6 +20,6 @@ public class AuthForgotPassword : ICarterModule
             .WithDescription("Envia um código de redefinição de senha para o WhatsApp do usuário.")
             .ProducesValidationProblem()
             .AddEndpointFilter<ValidationFilter<ForgotPasswordRequest>>()
-            .RequireRateLimiting(RateLimitExtensions.Policy.Login);
+            .RequireRateLimiting(RateLimitExtensions.Policy.Auth);
     }
 }

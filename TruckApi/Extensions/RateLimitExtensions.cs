@@ -8,7 +8,7 @@ public static class RateLimitExtensions
     // Para adicionar uma nova policy: crie a constante aqui e registre-a em AddRateLimitPolicy
     public static class Policy
     {
-        public const string Login = "login";
+        public const string Auth = "auth";
         // public const string PasswordReset = "password-reset";
     }
 
@@ -44,18 +44,18 @@ public static class RateLimitExtensions
                 )
             );
 
-            // Policy.Login — aplicado manualmente via .RequireRateLimiting(Policy.Login)
-            // Controle: appsettings.json > RateLimit > Login
+            // Policy.Auth — aplicado manualmente via .RequireRateLimiting(Policy.Auth)
+            // Controle: appsettings.json > RateLimit > Auth
             options.AddPolicy(
-                Policy.Login,
+                Policy.Auth,
                 ctx =>
                     RateLimitPartition.GetFixedWindowLimiter(
                         partitionKey: GetClientIp(ctx),
                         factory: _ => new FixedWindowRateLimiterOptions
                         {
-                            PermitLimit = config.GetValue("RateLimit:Login:PermitLimit", 5),
+                            PermitLimit = config.GetValue("RateLimit:Auth:PermitLimit", 5),
                             Window = TimeSpan.FromSeconds(
-                                config.GetValue("RateLimit:Login:WindowSeconds", 60)
+                                config.GetValue("RateLimit:Auth:WindowSeconds", 60)
                             ),
                             QueueLimit = 0,
                         }

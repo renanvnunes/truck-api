@@ -22,6 +22,6 @@ public class Login : ICarterModule
             )
             .ProducesValidationProblem()
             .AddEndpointFilter<ValidationFilter<LoginRequest>>()
-            .RequireRateLimiting(RateLimitExtensions.Policy.Login);
+            .RequireRateLimiting(RateLimitExtensions.Policy.Auth);
     }
 }

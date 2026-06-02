@@ -31,4 +31,10 @@ public static class AuthErrors
         "Código de verificação inválido.",
         StatusCodes.Status400BadRequest
     );
+
+    public static readonly Error OtpCooldown = new(
+        "Auth.OtpCooldown",
+        "Aguarde 30 segundos antes de solicitar um novo código.",
+        StatusCodes.Status429TooManyRequests
+    );
 }

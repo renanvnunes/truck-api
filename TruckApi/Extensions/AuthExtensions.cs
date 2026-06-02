@@ -40,6 +40,8 @@ public static class AuthExtensions
         services.AddScoped<LoginUseCase>();
         services.AddScoped<ForgotPasswordUseCase>();
         services.AddScoped<ConfirmNewPasswordUseCase>();
+        services.AddScoped<RequestOtpUseCase>();
+        services.AddScoped<VerifyOtpUseCase>();
 
         return services;
     }
