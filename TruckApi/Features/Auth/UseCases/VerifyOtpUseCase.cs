@@ -10,6 +10,7 @@ namespace TruckApi.Features.Auth.UseCases;
 public class VerifyOtpUseCase(
     IUserRepository userRepository,
     ITokenService tokenService,
+    IRefreshTokenService refreshTokenService,
     ICacheService cacheService
 )
 {
@@ -34,6 +35,7 @@ public class VerifyOtpUseCase(
         await cacheService.DeleteAsync(cacheKey);
 
         var token = tokenService.Generate(user, out var expiration);
+        var refreshToken = await refreshTokenService.GenerateAsync(user.Id);
 
         var session = new UserSession(
             user.Id,
@@ -46,6 +48,6 @@ public class VerifyOtpUseCase(
 
         await cacheService.SetAsync($"session:{user.Id}", session, expiration);
 
-        return Result<LoginResponse>.Success(new LoginResponse(token, session));
+        return Result<LoginResponse>.Success(new LoginResponse(token, refreshToken, session));
     }
 }

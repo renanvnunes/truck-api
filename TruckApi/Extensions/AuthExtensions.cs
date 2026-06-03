@@ -37,11 +37,13 @@ public static class AuthExtensions
         services.AddHttpContextAccessor();
         services.AddScoped<ICurrentUser, CurrentUser>();
         services.AddScoped<ITokenService, TokenService>();
+        services.AddScoped<IRefreshTokenService, RefreshTokenService>();
         services.AddScoped<LoginUseCase>();
         services.AddScoped<ForgotPasswordUseCase>();
         services.AddScoped<ConfirmNewPasswordUseCase>();
         services.AddScoped<RequestOtpUseCase>();
         services.AddScoped<VerifyOtpUseCase>();
+        services.AddScoped<RefreshTokenUseCase>();
 
         return services;
     }

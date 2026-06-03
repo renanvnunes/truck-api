@@ -9,6 +9,7 @@ namespace TruckApi.Features.Auth.UseCases;
 public class LoginUseCase(
     IUserRepository userRepository,
     ITokenService tokenService,
+    IRefreshTokenService refreshTokenService,
     ICacheService cache
 )
 {
@@ -27,6 +28,7 @@ public class LoginUseCase(
         }
 
         var token = tokenService.Generate(user, out var expiration);
+        var refreshToken = await refreshTokenService.GenerateAsync(user.Id);
 
         var session = new UserSession(
             user.Id,
@@ -39,6 +41,6 @@ public class LoginUseCase(
 
         await cache.SetAsync($"session:{user.Id}", session, expiration);
 
-        return Result<LoginResponse>.Success(new LoginResponse(token, session));
+        return Result<LoginResponse>.Success(new LoginResponse(token, refreshToken, session));
     }
 }
