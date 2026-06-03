@@ -9,7 +9,7 @@ public class AuthForgotPassword : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGroup("/auth")
+        app.MapGroup($"{ApiVersions.V1}/auth")
             .WithTags("Auth")
             .MapPost(
                 "/forgot-password",

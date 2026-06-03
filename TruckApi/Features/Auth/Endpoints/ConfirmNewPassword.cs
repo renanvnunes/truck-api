@@ -9,7 +9,7 @@ public class ConfirmNewPassword : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGroup("/auth")
+        app.MapGroup($"{ApiVersions.V1}/auth")
             .WithTags("Auth")
             .MapPost(
                 "/confirm-new-password",

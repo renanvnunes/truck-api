@@ -9,7 +9,7 @@ public class UserCreate : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGroup("/users")
+        app.MapGroup($"{ApiVersions.V1}/users")
             .WithTags("Users")
             .MapPost(
                 "/",
@@ -18,7 +18,7 @@ public class UserCreate : ICarterModule
                         .ExecuteAsync(request)
                         .ToCreatedAsync(user =>
                             (
-                                $"/users/{user.Id}",
+                                $"{ApiVersions.V1}/users/{user.Id}",
                                 new CreateUserResponse(
                                     user.Id,
                                     user.FullName,

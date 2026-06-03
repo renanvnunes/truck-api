@@ -32,8 +32,13 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseExceptionHandler();
 
-app.MapOpenApi();
-app.MapScalarApiReference("/docs", options => options.Title = "TruckApi");
+app.MapOpenApi("/openapi/{documentName}.json");
+app.MapScalarApiReference("/docs", options =>
+{
+    options.Title = "TruckApi";
+    options.OpenApiRoutePattern = "/openapi/{documentName}.json";
+    options.AddDocuments("v1");
+});
 
 app.MapGet("/", () => "TruckApi is running.");
 app.MapCarter();

@@ -9,7 +9,7 @@ public class CompanyDelete : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGroup("/companies")
+        app.MapGroup($"{ApiVersions.V1}/companies")
             .WithTags("Companies")
             .MapDelete(
                 "/{id}",

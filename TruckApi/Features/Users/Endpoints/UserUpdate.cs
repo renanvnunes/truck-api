@@ -8,7 +8,7 @@ public class UserUpdate : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGroup("/users")
+        app.MapGroup($"{ApiVersions.V1}/users")
             .WithTags("Users")
             .MapPatch(
                 "/{id}",

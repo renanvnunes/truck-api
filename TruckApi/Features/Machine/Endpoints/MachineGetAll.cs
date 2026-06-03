@@ -9,7 +9,7 @@ public class MachineGetAll : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGroup("/machines")
+        app.MapGroup($"{ApiVersions.V1}/machines")
             .WithTags("Machines")
             .MapGet(
                 "/",

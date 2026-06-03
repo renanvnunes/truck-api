@@ -7,7 +7,7 @@ public class UserDelete : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGroup("/users")
+        app.MapGroup($"{ApiVersions.V1}/users")
             .WithTags("Users")
             .MapDelete(
                 "/{id}",

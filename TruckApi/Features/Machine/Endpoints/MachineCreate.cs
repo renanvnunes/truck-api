@@ -9,13 +9,13 @@ public class MachineCreate : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGroup("/machines")
+        app.MapGroup($"{ApiVersions.V1}/machines")
             .WithTags("Machines")
             .MapPost(
                 "/",
                 (CreateMachineRequest request, CreateMachineUseCase useCase) =>
                     useCase.ExecuteAsync(request).ToCreatedAsync(m => (
-                        $"/machines/{m.Id}",
+                        $"{ApiVersions.V1}/machines/{m.Id}",
                         new CreateMachineResponse(m.Id, m.Code, m.Type, m.Brand, m.Model, m.Year, m.SerialNumber, m.Plate, m.CurrentHourmeter, m.Status, m.CompanyId, m.CreatedAt)
                     ))
             )

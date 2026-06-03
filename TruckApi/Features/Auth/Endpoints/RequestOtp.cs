@@ -9,7 +9,7 @@ public class RequestOtp : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGroup("/auth")
+        app.MapGroup($"{ApiVersions.V1}/auth")
             .WithTags("Auth")
             .MapPost(
                 "/otp/request",

@@ -10,7 +10,7 @@ public class MachineUpdateStatus : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGroup("/machines")
+        app.MapGroup($"{ApiVersions.V1}/machines")
             .WithTags("Machines")
             .MapPatch(
                 "/{id}/status",

@@ -9,13 +9,13 @@ public class CompanyCreate : ICarterModule
 {
     public void AddRoutes(IEndpointRouteBuilder app)
     {
-        app.MapGroup("/companies")
+        app.MapGroup($"{ApiVersions.V1}/companies")
             .WithTags("Companies")
             .MapPost(
                 "/",
                 (CreateCompanyRequest request, CreateCompanyUseCase useCase) =>
                     useCase.ExecuteAsync(request).ToCreatedAsync(company => (
-                        $"/companies/{company.Id}",
+                        $"{ApiVersions.V1}/companies/{company.Id}",
                         new CreateCompanyResponse(company.Id, company.Name, company.CreatedAt)
                     ))
             )

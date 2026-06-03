@@ -19,7 +19,15 @@ public static class ApplicationExtensions
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddOpenApi();
+        services.AddOpenApi("v1", options =>
+        {
+            options.AddDocumentTransformer((doc, _, _) =>
+            {
+                doc.Info.Title = "TruckApi";
+                doc.Info.Version = "v1";
+                return Task.CompletedTask;
+            });
+        });
         services.ConfigureHttpJsonOptions(options =>
         {
             options.SerializerOptions.Converters.Add(new TrimmingStringJsonConverter());
