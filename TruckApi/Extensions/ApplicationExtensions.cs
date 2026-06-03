@@ -5,6 +5,9 @@ using FluentValidation;
 using TruckApi.Features.Company.Interfaces;
 using TruckApi.Features.Company.Repository;
 using TruckApi.Features.Company.UseCases;
+using TruckApi.Features.Machine.Interfaces;
+using TruckApi.Features.Machine.Repository;
+using TruckApi.Features.Machine.UseCases;
 using TruckApi.Features.Users.Interfaces;
 using TruckApi.Features.Users.Repository;
 using TruckApi.Features.Users.UseCases;
@@ -32,6 +35,15 @@ public static class ApplicationExtensions
         services.AddScoped<GetCompanyByIdUseCase>();
         services.AddScoped<UpdateCompanyUseCase>();
         services.AddScoped<DeleteCompanyUseCase>();
+
+        services.AddScoped<IMachineRepository, MachineRepository>();
+        services.AddScoped<CreateMachineUseCase>();
+        services.AddScoped<GetAllMachinesUseCase>();
+        services.AddScoped<GetMachineByIdUseCase>();
+        services.AddScoped<UpdateMachineUseCase>();
+        services.AddScoped<UpdateMachineStatusUseCase>();
+        services.AddScoped<UpdateMachineHourmeterUseCase>();
+        services.AddScoped<DeleteMachineUseCase>();
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<GetAllUsersUseCase>();

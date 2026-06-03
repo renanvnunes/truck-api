@@ -14,9 +14,13 @@ public class CompanyUpdate : ICarterModule
             .MapPatch(
                 "/{id}",
                 (string id, UpdateCompanyRequest request, UpdateCompanyUseCase useCase) =>
-                    useCase.ExecuteAsync(id, request).ToHttpResultAsync(company =>
-                        new UpdateCompanyResponse(company.Id, company.Name, company.UpdatedAt)
-                    )
+                    useCase
+                        .ExecuteAsync(id, request)
+                        .ToHttpResultAsync(company => new UpdateCompanyResponse(
+                            company.Id,
+                            company.Name,
+                            company.UpdatedAt
+                        ))
             )
             .WithSummary("Atualizar empresa")
             .WithDescription(
