@@ -18,12 +18,16 @@ public class UpdateMachineUseCase(IMachineRepository repository, ICurrentUser cu
         }
 
         if (!currentUser.Session.CanAccessCompany(machine.CompanyId))
+        {
             return Result<MachineEntity>.Failure(MachineErrors.Forbidden);
+        }
 
         if (request.SerialNumber is not null && request.SerialNumber != machine.SerialNumber)
         {
             if (await repository.SerialNumberExistsForOtherMachineAsync(request.SerialNumber, id))
+            {
                 return Result<MachineEntity>.Failure(MachineErrors.SerialNumberAlreadyExists);
+            }
 
             machine.SerialNumber = request.SerialNumber;
         }
@@ -43,15 +47,25 @@ public class UpdateMachineUseCase(IMachineRepository repository, ICurrentUser cu
         }
 
         if (request.Type is not null)
+        {
             machine.Type = Enum.Parse<MachineType>(request.Type, ignoreCase: true);
+        }
         if (request.Brand is not null)
+        {
             machine.Brand = request.Brand;
+        }
         if (request.Model is not null)
+        {
             machine.Model = request.Model;
+        }
         if (request.Year is not null)
+        {
             machine.Year = request.Year.Value;
+        }
         if (request.Plate is not null)
+        {
             machine.Plate = request.Plate;
+        }
 
         machine.UpdatedAt = DateTimeOffset.UtcNow;
 

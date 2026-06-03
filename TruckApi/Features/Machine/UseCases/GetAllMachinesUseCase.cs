@@ -5,7 +5,10 @@ namespace TruckApi.Features.Machine.UseCases;
 
 public class GetAllMachinesUseCase(IMachineRepository repository, ICurrentUser currentUser)
 {
-    public async Task<(MachineEntity[] Machines, string? NextCursor)> ExecuteAsync(string? cursor, int limit)
+    public async Task<(MachineEntity[] Machines, string? NextCursor)> ExecuteAsync(
+        string? cursor,
+        int limit
+    )
     {
         limit = Math.Clamp(limit, 1, 100);
 

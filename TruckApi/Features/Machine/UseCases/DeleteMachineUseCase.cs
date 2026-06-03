@@ -10,7 +10,9 @@ public class DeleteMachineUseCase(IMachineRepository repository)
         var machine = await repository.GetByIdAsync(id);
 
         if (machine is null)
+        {
             return Result<bool>.Failure(MachineErrors.NotFound);
+        }
 
         await repository.RemoveAsync(id);
 

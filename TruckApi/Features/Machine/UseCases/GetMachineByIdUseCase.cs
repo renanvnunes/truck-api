@@ -11,10 +11,14 @@ public class GetMachineByIdUseCase(IMachineRepository repository, ICurrentUser c
         var machine = await repository.GetByIdAsync(id);
 
         if (machine is null)
+        {
             return Result<MachineEntity>.Failure(MachineErrors.NotFound);
+        }
 
         if (!currentUser.Session.CanAccessCompany(machine.CompanyId))
+        {
             return Result<MachineEntity>.Failure(MachineErrors.Forbidden);
+        }
 
         return Result<MachineEntity>.Success(machine);
     }

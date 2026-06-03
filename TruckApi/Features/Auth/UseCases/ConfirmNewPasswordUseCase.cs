@@ -22,7 +22,9 @@ public class ConfirmNewPasswordUseCase(
         var cached = await cacheService.GetAsync<PasswordResetCache>(cacheKey);
 
         if (cached is null || cached.Code != request.Code)
+        {
             return Result<ConfirmNewPasswordResponse>.Failure(AuthErrors.InvalidVerificationCode);
+        }
 
         await cacheService.DeleteAsync(cacheKey);
 
