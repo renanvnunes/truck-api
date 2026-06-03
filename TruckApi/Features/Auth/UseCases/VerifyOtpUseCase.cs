@@ -14,23 +14,27 @@ public class VerifyOtpUseCase(
     ICacheService cacheService
 )
 {
-    private const string CodeKeyPrefix = "otp-login-code:";
-
     public async Task<Result<LoginResponse>> ExecuteAsync(VerifyOtpRequest request)
     {
-        var cacheKey = $"{CodeKeyPrefix}{request.Whatsapp}";
+        var cacheKey = CacheKeys.Auth.Otp.Code(request.Whatsapp);
         var cachedCode = await cacheService.GetAsync<string>(cacheKey);
 
         if (cachedCode is null || cachedCode != request.Code)
+        {
             return Result<LoginResponse>.Failure(AuthErrors.InvalidVerificationCode);
+        }
 
         var user = await userRepository.GetByWhatsappAsync(request.Whatsapp);
 
         if (user is null)
+        {
             return Result<LoginResponse>.Failure(AuthErrors.UserNotFound);
+        }
 
         if (!user.IsActive)
+        {
             return Result<LoginResponse>.Failure(AuthErrors.UserInactive);
+        }
 
         await cacheService.DeleteAsync(cacheKey);
 
@@ -46,7 +50,7 @@ public class VerifyOtpUseCase(
             user.IsActive
         );
 
-        await cacheService.SetAsync($"session:{user.Id}", session, expiration);
+        await cacheService.SetAsync(CacheKeys.Auth.Session(user.Id), session, expiration);
 
         return Result<LoginResponse>.Success(new LoginResponse(token, refreshToken, session));
     }

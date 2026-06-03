@@ -12,13 +12,11 @@ public class ConfirmNewPasswordUseCase(
     IAuditService auditService
 )
 {
-    private const string CodeKeyPrefix = "forgot-password-code:";
-
     public async Task<Result<ConfirmNewPasswordResponse>> ExecuteAsync(
         ConfirmNewPasswordRequest request
     )
     {
-        var cacheKey = $"{CodeKeyPrefix}{request.Whatsapp}";
+        var cacheKey = CacheKeys.Auth.Forgot.Code(request.Whatsapp);
         var cached = await cacheService.GetAsync<PasswordResetCache>(cacheKey);
 
         if (cached is null || cached.Code != request.Code)

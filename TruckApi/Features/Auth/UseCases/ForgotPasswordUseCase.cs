@@ -8,8 +8,6 @@ namespace TruckApi.Features.Auth.UseCases;
 
 public class ForgotPasswordUseCase(IUserRepository userRepository, ICacheService cacheService)
 {
-    private const string CodeKeyPrefix = "forgot-password-code:";
-    private const string CooldownKeyPrefix = "forgot-password-cooldown:";
     private const int CooldownSeconds = 30;
     private const int ExpiresInSeconds = 300;
 
@@ -18,14 +16,16 @@ public class ForgotPasswordUseCase(IUserRepository userRepository, ICacheService
         var user = await userRepository.GetByWhatsappAsync(request.Whatsapp);
 
         if (user is null)
+        {
             return Result<ForgotPasswordResponse>.Failure(AuthErrors.UserNotFound);
+        }
 
         if (!user.IsActive)
+        {
             return Result<ForgotPasswordResponse>.Failure(AuthErrors.UserInactive);
+        }
 
-        var cooldownKey = $"{CooldownKeyPrefix}{request.Whatsapp}";
-
-        if (await cacheService.ExistsAsync(cooldownKey))
+        if (await cacheService.ExistsAsync(CacheKeys.Auth.Forgot.Cooldown(request.Whatsapp)))
         {
             return Result<ForgotPasswordResponse>.Failure(AuthErrors.ForgotPasswordCooldown);
         }
@@ -34,12 +34,12 @@ public class ForgotPasswordUseCase(IUserRepository userRepository, ICacheService
 
         await Task.WhenAll(
             cacheService.SetAsync(
-                $"{CodeKeyPrefix}{request.Whatsapp}",
+                CacheKeys.Auth.Forgot.Code(request.Whatsapp),
                 new PasswordResetCache(user.Id, resetCode),
                 TimeSpan.FromSeconds(ExpiresInSeconds)
             ),
             cacheService.SetAsync(
-                cooldownKey,
+                CacheKeys.Auth.Forgot.Cooldown(request.Whatsapp),
                 DateTimeOffset.UtcNow.ToUnixTimeMilliseconds(),
                 TimeSpan.FromSeconds(CooldownSeconds)
             )

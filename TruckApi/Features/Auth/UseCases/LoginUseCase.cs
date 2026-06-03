@@ -39,7 +39,7 @@ public class LoginUseCase(
             user.IsActive
         );
 
-        await cache.SetAsync($"session:{user.Id}", session, expiration);
+        await cache.SetAsync(CacheKeys.Auth.Session(user.Id), session, expiration);
 
         return Result<LoginResponse>.Success(new LoginResponse(token, refreshToken, session));
     }

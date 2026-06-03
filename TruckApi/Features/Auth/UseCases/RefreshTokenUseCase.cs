@@ -31,7 +31,7 @@ public class RefreshTokenUseCase(
         var accessToken = tokenService.Generate(user, out var expiration);
 
         await cache.SetAsync(
-            $"session:{user.Id}",
+            CacheKeys.Auth.Session(user.Id),
             new UserSession(user.Id, user.FullName, user.Whatsapp, user.Role.ToString(), user.CompanyId, user.IsActive),
             expiration
         );

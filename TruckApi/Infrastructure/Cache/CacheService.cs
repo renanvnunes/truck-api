@@ -30,4 +30,29 @@ public class CacheService(IConnectionMultiplexer redis) : ICacheService
         var db = redis.GetDatabase();
         await db.KeyDeleteAsync(key);
     }
+
+    public async Task SortedSetAddAsync(string key, string member, double score)
+    {
+        var db = redis.GetDatabase();
+        await db.SortedSetAddAsync(key, member, score);
+    }
+
+    public async Task SortedSetRemoveAsync(string key, string member)
+    {
+        var db = redis.GetDatabase();
+        await db.SortedSetRemoveAsync(key, member);
+    }
+
+    public async Task<long> SortedSetCountAsync(string key)
+    {
+        var db = redis.GetDatabase();
+        return await db.SortedSetLengthAsync(key);
+    }
+
+    public async Task<string[]> SortedSetRangeByRankAsync(string key, long start, long stop)
+    {
+        var db = redis.GetDatabase();
+        var values = await db.SortedSetRangeByRankAsync(key, start, stop);
+        return values.Select(v => (string)v!).ToArray();
+    }
 }
