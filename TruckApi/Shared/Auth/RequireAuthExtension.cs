@@ -31,7 +31,7 @@ public static class RequireAuthExtension
                     }
 
                     var cache = http.RequestServices.GetRequiredService<ICacheService>();
-                    var session = await cache.GetAsync<UserSession>($"session:{userId}");
+                    var session = await cache.GetAsync<UserSession>(CacheKeys.Auth.Session(userId));
 
                     if (session is null)
                     {

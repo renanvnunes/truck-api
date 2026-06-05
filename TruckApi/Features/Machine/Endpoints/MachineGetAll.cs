@@ -22,11 +22,22 @@ public class MachineGetAll : ICarterModule
                     var (machines, nextCursor) = await useCase.ExecuteAsync(cursor, limit);
 
                     var response = new GetAllMachinesResponse(
-                        machines.Select(m => new GetAllMachinesItem(
-                            m.Id, m.Code, m.Type, m.Brand, m.Model, m.Year,
-                            m.SerialNumber, m.Plate, m.CurrentHourmeter, m.Status,
-                            m.CompanyId, m.CreatedAt
-                        )).ToArray(),
+                        machines
+                            .Select(m => new GetAllMachinesItem(
+                                m.Id,
+                                m.Code,
+                                m.Type,
+                                m.Brand,
+                                m.Model,
+                                m.Year,
+                                m.SerialNumber,
+                                m.Plate,
+                                m.CurrentHourmeter,
+                                m.Status,
+                                m.CompanyId,
+                                m.CreatedAt
+                            ))
+                            .ToArray(),
                         nextCursor
                     );
 
@@ -34,7 +45,9 @@ public class MachineGetAll : ICarterModule
                 }
             )
             .WithSummary("Listar máquinas")
-            .WithDescription("Retorna máquinas paginadas com cursor. Admin retorna todas, demais roles retornam apenas as da própria empresa.")
+            .WithDescription(
+                "Retorna máquinas paginadas com cursor. Admin retorna todas, demais roles retornam apenas as da própria empresa."
+            )
             .RequireAuth();
     }
 }
