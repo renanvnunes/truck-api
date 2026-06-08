@@ -1,6 +1,7 @@
 using Carter;
 using TruckApi.Features.Users.Dtos.UpdateUser;
 using TruckApi.Features.Users.UseCases;
+using TruckApi.Infrastructure.Database.Entities;
 
 namespace TruckApi.Features.Users.Endpoints;
 
@@ -29,6 +30,7 @@ public class UserUpdate : ICarterModule
                 "Atualiza parcialmente os dados de um usuário. Apenas os campos enviados serão alterados."
             )
             .ProducesValidationProblem()
-            .AddEndpointFilter<ValidationFilter<UpdateUserRequest>>();
+            .AddEndpointFilter<ValidationFilter<UpdateUserRequest>>()
+            .RequireAuth(UserRole.Admin, UserRole.CompanyManager);
     }
 }

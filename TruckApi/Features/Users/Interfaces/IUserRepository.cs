@@ -6,7 +6,7 @@ public interface IUserRepository
 {
     Task<User> CreateAsync(User user);
     Task<bool> WhatsappExistsAsync(string whatsapp);
-    Task<User[]> GetAllAsync(string? cursor, int limit);
+    Task<User[]> GetAllAsync(string? cursor, int limit, string? companyId);
 
     Task<User?> GetByIdAsync(string id);
     Task<User?> GetByWhatsappAsync(string whatsapp);

@@ -5,6 +5,9 @@ using FluentValidation;
 using TruckApi.Features.Company.Interfaces;
 using TruckApi.Features.Company.Repository;
 using TruckApi.Features.Company.UseCases;
+using TruckApi.Features.HourRecord.Interfaces;
+using TruckApi.Features.HourRecord.Repository;
+using TruckApi.Features.HourRecord.UseCases;
 using TruckApi.Features.Machine.Interfaces;
 using TruckApi.Features.Machine.Repository;
 using TruckApi.Features.Machine.UseCases;
@@ -59,6 +62,12 @@ public static class ApplicationExtensions
         services.AddScoped<CreateUserUseCase>();
         services.AddScoped<UpdateUserUseCase>();
         services.AddScoped<DeleteUserUseCase>();
+
+        services.AddScoped<IHourRecordRepository, HourRecordRepository>();
+        services.AddScoped<CheckInUseCase>();
+        services.AddScoped<CheckOutUseCase>();
+        services.AddScoped<GetAllHourRecordsUseCase>();
+        services.AddScoped<GetHourRecordByIdUseCase>();
 
         services.AddValidatorsFromAssemblyContaining<Program>();
         services.AddCarter();

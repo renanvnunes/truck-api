@@ -2,6 +2,7 @@ using Carter;
 using Microsoft.AspNetCore.Http.HttpResults;
 using TruckApi.Features.Users.Dtos.GetAllUsers;
 using TruckApi.Features.Users.UseCases;
+using TruckApi.Infrastructure.Database.Entities;
 
 namespace TruckApi.Features.Users.Endpoints;
 
@@ -22,16 +23,16 @@ public class UserGetAll : ICarterModule
                     var (users, nextCursor) = await useCase.ExecuteAsync(cursor, limit);
 
                     var response = new GetAllUsersResponse(
-                        users
-                            .Select(u => new GetAllUsersItem(
+                        [
+                            .. users.Select(u => new GetAllUsersItem(
                                 u.Id,
                                 u.FullName,
                                 u.Whatsapp,
                                 u.Role.ToString(),
                                 u.IsActive,
                                 u.CreatedAt
-                            ))
-                            .ToArray(),
+                            )),
+                        ],
                         nextCursor
                     );
 
@@ -42,6 +43,6 @@ public class UserGetAll : ICarterModule
             .WithDescription(
                 "Retorna usuários paginados com cursor. Use o campo `nextCursor` da resposta como parâmetro `cursor` na próxima requisição."
             )
-            .RequireAuth();
+            .RequireAuth(UserRole.Admin, UserRole.CompanyManager, UserRole.CompanySupervisor);
     }
 }

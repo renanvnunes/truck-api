@@ -5,7 +5,7 @@ using TruckApi.Infrastructure.Database.Entities;
 
 namespace TruckApi.Features.Users.UseCases;
 
-public class UpdateUserUseCase(IUserRepository repository)
+public class UpdateUserUseCase(IUserRepository repository, ICurrentUser currentUser)
 {
     public async Task<Result<User>> ExecuteAsync(string id, UpdateUserRequest request)
     {
@@ -14,6 +14,11 @@ public class UpdateUserUseCase(IUserRepository repository)
         if (user is null)
         {
             return Result<User>.Failure(UserErrors.NotFound);
+        }
+
+        if (!currentUser.Session.CanAccessCompany(user.CompanyId))
+        {
+            return Result<User>.Failure(UserErrors.Forbidden);
         }
 
         if (request.Whatsapp is not null && request.Whatsapp != user.Whatsapp)

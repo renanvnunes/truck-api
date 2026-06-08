@@ -1,5 +1,6 @@
 using Carter;
 using TruckApi.Features.Users.UseCases;
+using TruckApi.Infrastructure.Database.Entities;
 
 namespace TruckApi.Features.Users.Endpoints;
 
@@ -15,6 +16,7 @@ public class UserDelete : ICarterModule
                     useCase.ExecuteAsync(id).ToNoContentAsync()
             )
             .WithSummary("Remover usuário")
-            .WithDescription("Remove permanentemente um usuário do sistema.");
+            .WithDescription("Remove permanentemente um usuário do sistema.")
+            .RequireAuth(UserRole.Admin, UserRole.CompanyManager);
     }
 }

@@ -19,14 +19,15 @@ public class UserRepository(AppDbContext db) : IUserRepository
         return await db.Users.AnyAsync(u => u.Whatsapp == whatsapp);
     }
 
-    public async Task<User[]> GetAllAsync(string? cursor, int limit)
+    public async Task<User[]> GetAllAsync(string? cursor, int limit, string? companyId)
     {
         var query = db.Users.AsQueryable();
 
+        if (companyId is not null)
+            query = query.Where(u => u.CompanyId == companyId);
+
         if (cursor is not null)
-        {
             query = query.Where(u => string.Compare(u.Id, cursor) > 0);
-        }
 
         return await query.OrderBy(u => u.Id).Take(limit).ToArrayAsync();
     }

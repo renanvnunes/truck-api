@@ -14,4 +14,10 @@ public static class UserErrors
         "Whatsapp já cadastrado.",
         StatusCodes.Status409Conflict
     );
+
+    public static readonly Error Forbidden = new(
+        "User.Forbidden",
+        "Acesso negado a este usuário.",
+        StatusCodes.Status403Forbidden
+    );
 }
