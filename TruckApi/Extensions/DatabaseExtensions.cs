@@ -21,6 +21,7 @@ public static class DatabaseExtensions
         );
 
         services.AddSingleton<ICacheService, CacheService>();
+        services.AddHostedService<DatabaseMigrationService>();
 
         return services;
     }

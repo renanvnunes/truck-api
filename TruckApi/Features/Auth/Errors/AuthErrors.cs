@@ -43,4 +43,10 @@ public static class AuthErrors
         "Refresh token inválido ou expirado.",
         StatusCodes.Status401Unauthorized
     );
+
+    public static readonly Error AccountIncomplete = new(
+        "Auth.AccountIncomplete",
+        "Conta com dados incompletos. Entre em contato com o administrador.",
+        StatusCodes.Status403Forbidden
+    );
 }

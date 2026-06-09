@@ -12,6 +12,10 @@ public class GetAllMachinesUseCase(IMachineRepository repository, ICurrentUser c
     {
         limit = Math.Clamp(limit, 1, 100);
 
+        Console.WriteLine(
+            $"GetAllMachinesUseCase: cursor={cursor}, limit={limit}, userCompany={currentUser.Session.CompanyId}, isAdmin={currentUser.Session.IsAdmin()}, userId={currentUser.Session.Id}"
+        );
+
         var companyId = currentUser.Session.IsAdmin() ? null : currentUser.Session.CompanyId;
 
         var machines = await repository.GetAllAsync(cursor, limit + 1, companyId);

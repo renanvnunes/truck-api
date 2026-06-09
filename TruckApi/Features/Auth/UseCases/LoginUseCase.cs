@@ -3,6 +3,7 @@ using TruckApi.Features.Auth.Errors;
 using TruckApi.Features.Auth.Services;
 using TruckApi.Features.Users.Interfaces;
 using TruckApi.Infrastructure.Cache;
+using TruckApi.Infrastructure.Database.Entities;
 
 namespace TruckApi.Features.Auth.UseCases;
 
@@ -25,6 +26,11 @@ public class LoginUseCase(
         if (!user.IsActive)
         {
             return Result<LoginResponse>.Failure(AuthErrors.UserInactive);
+        }
+
+        if (user.Role != UserRole.Admin && user.CompanyId is null)
+        {
+            return Result<LoginResponse>.Failure(AuthErrors.AccountIncomplete);
         }
 
         var token = tokenService.Generate(user, out var expiration);

@@ -29,7 +29,13 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
             e.HasOne(u => u.Company)
                 .WithMany(c => c.Users)
                 .HasForeignKey(u => u.CompanyId)
-                .OnDelete(DeleteBehavior.SetNull);
+                .OnDelete(DeleteBehavior.Restrict);
+            e.ToTable(t =>
+                t.HasCheckConstraint(
+                    "ck_users_company_id_by_role",
+                    "(role = 'Admin' AND company_id IS NULL) OR (role <> 'Admin' AND company_id IS NOT NULL)"
+                )
+            );
         });
 
         modelBuilder.Entity<Machine>(e =>

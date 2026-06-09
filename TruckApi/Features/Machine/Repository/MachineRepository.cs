@@ -20,28 +20,39 @@ public class MachineRepository(AppDbContext db) : IMachineRepository
         var query = db.Machines.AsQueryable();
 
         if (companyId is not null)
+        {
             query = query.Where(m => m.CompanyId == companyId);
+        }
 
         if (cursor is not null)
+        {
             query = query.Where(m => string.Compare(m.Id, cursor) > 0);
+        }
 
         return await query.OrderBy(m => m.Id).Take(limit).ToArrayAsync();
     }
 
-    public async Task<MachineEntity?> GetByIdAsync(string id) =>
-        await db.Machines.FindAsync(id);
+    public async Task<MachineEntity?> GetByIdAsync(string id) => await db.Machines.FindAsync(id);
 
     public async Task<bool> SerialNumberExistsAsync(string serialNumber) =>
         await db.Machines.AnyAsync(m => m.SerialNumber == serialNumber);
 
-    public async Task<bool> SerialNumberExistsForOtherMachineAsync(string serialNumber, string excludeId) =>
-        await db.Machines.AnyAsync(m => m.SerialNumber == serialNumber && m.Id != excludeId);
+    public async Task<bool> SerialNumberExistsForOtherMachineAsync(
+        string serialNumber,
+        string excludeId
+    ) => await db.Machines.AnyAsync(m => m.SerialNumber == serialNumber && m.Id != excludeId);
 
     public async Task<bool> CodeExistsInCompanyAsync(string code, string companyId) =>
         await db.Machines.AnyAsync(m => m.Code == code && m.CompanyId == companyId);
 
-    public async Task<bool> CodeExistsForOtherMachineInCompanyAsync(string code, string companyId, string excludeId) =>
-        await db.Machines.AnyAsync(m => m.Code == code && m.CompanyId == companyId && m.Id != excludeId);
+    public async Task<bool> CodeExistsForOtherMachineInCompanyAsync(
+        string code,
+        string companyId,
+        string excludeId
+    ) =>
+        await db.Machines.AnyAsync(m =>
+            m.Code == code && m.CompanyId == companyId && m.Id != excludeId
+        );
 
     public async Task UpdateAsync(MachineEntity machine)
     {
