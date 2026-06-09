@@ -11,7 +11,9 @@ public class GetCompanyByIdUseCase(ICompanyRepository repository)
         var company = await repository.GetByIdAsync(id);
 
         if (company is null)
+        {
             return Result<CompanyEntity>.Failure(CompanyErrors.NotFound);
+        }
 
         return Result<CompanyEntity>.Success(company);
     }

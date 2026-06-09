@@ -8,11 +8,10 @@ namespace TruckApi.Features.Machine.Repository;
 
 public class MachineRepository(AppDbContext db) : IMachineRepository
 {
-    public async Task<MachineEntity> CreateAsync(MachineEntity machine)
+    public Task<MachineEntity> CreateAsync(MachineEntity machine)
     {
         db.Machines.Add(machine);
-        await db.SaveChangesAsync();
-        return machine;
+        return Task.FromResult(machine);
     }
 
     public async Task<MachineEntity[]> GetAllAsync(string? cursor, int limit, string? companyId)
@@ -32,7 +31,8 @@ public class MachineRepository(AppDbContext db) : IMachineRepository
         return await query.OrderBy(m => m.Id).Take(limit).ToArrayAsync();
     }
 
-    public async Task<MachineEntity?> GetByIdAsync(string id) => await db.Machines.FindAsync(id);
+    public async Task<MachineEntity?> GetByIdAsync(string id) =>
+        await db.Machines.FindAsync(id);
 
     public async Task<bool> SerialNumberExistsAsync(string serialNumber) =>
         await db.Machines.AnyAsync(m => m.SerialNumber == serialNumber);
@@ -54,10 +54,10 @@ public class MachineRepository(AppDbContext db) : IMachineRepository
             m.Code == code && m.CompanyId == companyId && m.Id != excludeId
         );
 
-    public async Task UpdateAsync(MachineEntity machine)
+    public Task UpdateAsync(MachineEntity machine)
     {
         db.Machines.Update(machine);
-        await db.SaveChangesAsync();
+        return Task.CompletedTask;
     }
 
     public async Task UpdateStatusAsync(string id, MachineStatus status)
@@ -67,7 +67,6 @@ public class MachineRepository(AppDbContext db) : IMachineRepository
         {
             machine.Status = status;
             machine.UpdatedAt = DateTimeOffset.UtcNow;
-            await db.SaveChangesAsync();
         }
     }
 
@@ -78,7 +77,6 @@ public class MachineRepository(AppDbContext db) : IMachineRepository
         {
             machine.CurrentHourmeter = hourmeter;
             machine.UpdatedAt = DateTimeOffset.UtcNow;
-            await db.SaveChangesAsync();
         }
     }
 
@@ -88,7 +86,6 @@ public class MachineRepository(AppDbContext db) : IMachineRepository
         if (machine is not null)
         {
             db.Machines.Remove(machine);
-            await db.SaveChangesAsync();
         }
     }
 }

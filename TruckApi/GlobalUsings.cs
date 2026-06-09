@@ -1,3 +1,4 @@
+global using TruckApi.Infrastructure.Database;
 global using TruckApi.Shared;
 global using TruckApi.Shared.Auth;
 global using TruckApi.Shared.Filters;

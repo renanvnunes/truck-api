@@ -9,12 +9,11 @@ namespace TruckApi.Features.Auth.UseCases;
 public class ConfirmNewPasswordUseCase(
     IUserRepository userRepository,
     ICacheService cacheService,
-    IAuditService auditService
+    IAuditService auditService,
+    IUnitOfWork unitOfWork
 )
 {
-    public async Task<Result<ConfirmNewPasswordResponse>> ExecuteAsync(
-        ConfirmNewPasswordRequest request
-    )
+    public async Task<Result<ConfirmNewPasswordResponse>> ExecuteAsync(ConfirmNewPasswordRequest request)
     {
         var cacheKey = CacheKeys.Auth.Forgot.Code(request.Whatsapp);
         var cached = await cacheService.GetAsync<PasswordResetCache>(cacheKey);
@@ -28,6 +27,7 @@ public class ConfirmNewPasswordUseCase(
 
         var passwordHash = PasswordHash.Hash(request.NewPassword);
         await userRepository.UpdatePasswordAsync(cached.UserId, passwordHash);
+        await unitOfWork.CommitAsync();
 
         _ = auditService.LogAsync(
             new AuditLog

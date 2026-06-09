@@ -6,7 +6,11 @@ using HourRecordEntity = TruckApi.Infrastructure.Database.Entities.HourRecord;
 
 namespace TruckApi.Features.HourRecord.UseCases;
 
-public class CheckOutUseCase(IHourRecordRepository repository, ICurrentUser currentUser)
+public class CheckOutUseCase(
+    IHourRecordRepository repository,
+    ICurrentUser currentUser,
+    IUnitOfWork unitOfWork
+)
 {
     public async Task<Result<HourRecordEntity>> ExecuteAsync(string id, CheckOutRequest request)
     {
@@ -49,7 +53,7 @@ public class CheckOutUseCase(IHourRecordRepository repository, ICurrentUser curr
         record.UpdatedAt = now;
 
         await repository.UpdateAsync(record);
-
+        await unitOfWork.CommitAsync();
         return Result<HourRecordEntity>.Success(record);
     }
 }

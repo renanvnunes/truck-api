@@ -5,7 +5,11 @@ using MachineEntity = TruckApi.Infrastructure.Database.Entities.Machine;
 
 namespace TruckApi.Features.Machine.UseCases;
 
-public class UpdateMachineHourmeterUseCase(IMachineRepository repository, ICurrentUser currentUser)
+public class UpdateMachineHourmeterUseCase(
+    IMachineRepository repository,
+    ICurrentUser currentUser,
+    IUnitOfWork unitOfWork
+)
 {
     public async Task<Result<MachineEntity>> ExecuteAsync(
         string id,
@@ -25,6 +29,7 @@ public class UpdateMachineHourmeterUseCase(IMachineRepository repository, ICurre
         }
 
         if (request.Hourmeter < machine.CurrentHourmeter)
+        {
             return Result<MachineEntity>.Failure(
                 new Error(
                     "Machine.HourmeterCannotDecrease",
@@ -32,8 +37,10 @@ public class UpdateMachineHourmeterUseCase(IMachineRepository repository, ICurre
                     StatusCodes.Status400BadRequest
                 )
             );
+        }
 
         await repository.UpdateHourmeterAsync(id, request.Hourmeter);
+        await unitOfWork.CommitAsync();
 
         machine.CurrentHourmeter = request.Hourmeter;
         machine.UpdatedAt = DateTimeOffset.UtcNow;

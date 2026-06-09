@@ -11,18 +11,21 @@ public class CreateUserUseCaseTests
 {
     private readonly IUserRepository _userRepo = Substitute.For<IUserRepository>();
     private readonly ICompanyRepository _companyRepo = Substitute.For<ICompanyRepository>();
+    private readonly IUnitOfWork _unitOfWork = Substitute.For<IUnitOfWork>();
     private readonly CreateUserUseCase _sut;
 
     public CreateUserUseCaseTests()
     {
-        _sut = new CreateUserUseCase(_userRepo, _companyRepo);
+        _sut = new CreateUserUseCase(_userRepo, _companyRepo, _unitOfWork);
     }
 
     private static CreateUserRequest ValidAdmin() =>
         new(FullName: "João Silva", Whatsapp: "5511999999999", Role: UserRole.Admin);
 
-    private static CreateUserRequest ValidNonAdmin(UserRole role, string? companyId = "company_123") =>
-        new(FullName: "Carlos Souza", Whatsapp: "5511888888888", Role: role, CompanyId: companyId);
+    private static CreateUserRequest ValidNonAdmin(
+        UserRole role,
+        string? companyId = "company_123"
+    ) => new(FullName: "Carlos Souza", Whatsapp: "5511888888888", Role: role, CompanyId: companyId);
 
     // --- CompanyId inexistente ---
 

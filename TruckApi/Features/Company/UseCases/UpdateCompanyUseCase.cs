@@ -5,7 +5,7 @@ using CompanyEntity = TruckApi.Infrastructure.Database.Entities.Company;
 
 namespace TruckApi.Features.Company.UseCases;
 
-public class UpdateCompanyUseCase(ICompanyRepository repository)
+public class UpdateCompanyUseCase(ICompanyRepository repository, IUnitOfWork unitOfWork)
 {
     public async Task<Result<CompanyEntity>> ExecuteAsync(string id, UpdateCompanyRequest request)
     {
@@ -19,7 +19,9 @@ public class UpdateCompanyUseCase(ICompanyRepository repository)
         if (request.Name is not null && request.Name != company.Name)
         {
             if (await repository.NameExistsForOtherCompanyAsync(request.Name, id))
+            {
                 return Result<CompanyEntity>.Failure(CompanyErrors.NameAlreadyExists);
+            }
 
             company.Name = request.Name;
         }
@@ -27,7 +29,7 @@ public class UpdateCompanyUseCase(ICompanyRepository repository)
         company.UpdatedAt = DateTimeOffset.UtcNow;
 
         await repository.UpdateAsync(company);
-
+        await unitOfWork.CommitAsync();
         return Result<CompanyEntity>.Success(company);
     }
 }

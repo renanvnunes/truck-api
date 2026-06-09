@@ -11,11 +11,12 @@ public class CreateMachineUseCaseTests
     private readonly IMachineRepository _machineRepo = Substitute.For<IMachineRepository>();
     private readonly ICompanyRepository _companyRepo = Substitute.For<ICompanyRepository>();
     private readonly ICurrentUser _currentUser = Substitute.For<ICurrentUser>();
+    private readonly IUnitOfWork _unitOfWork = Substitute.For<IUnitOfWork>();
     private readonly CreateMachineUseCase _sut;
 
     public CreateMachineUseCaseTests()
     {
-        _sut = new CreateMachineUseCase(_machineRepo, _companyRepo, _currentUser);
+        _sut = new CreateMachineUseCase(_machineRepo, _companyRepo, _currentUser, _unitOfWork);
     }
 
     private static CreateMachineRequest ValidRequest(string? companyId = null)

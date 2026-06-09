@@ -5,7 +5,11 @@ using MachineEntity = TruckApi.Infrastructure.Database.Entities.Machine;
 
 namespace TruckApi.Features.Machine.UseCases;
 
-public class UpdateMachineStatusUseCase(IMachineRepository repository, ICurrentUser currentUser)
+public class UpdateMachineStatusUseCase(
+    IMachineRepository repository,
+    ICurrentUser currentUser,
+    IUnitOfWork unitOfWork
+)
 {
     public async Task<Result<MachineEntity>> ExecuteAsync(
         string id,
@@ -25,6 +29,7 @@ public class UpdateMachineStatusUseCase(IMachineRepository repository, ICurrentU
         }
 
         await repository.UpdateStatusAsync(id, request.Status);
+        await unitOfWork.CommitAsync();
 
         machine.Status = request.Status;
         machine.UpdatedAt = DateTimeOffset.UtcNow;

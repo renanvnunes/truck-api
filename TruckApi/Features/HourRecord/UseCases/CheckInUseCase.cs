@@ -9,12 +9,12 @@ namespace TruckApi.Features.HourRecord.UseCases;
 public class CheckInUseCase(
     IHourRecordRepository repository,
     IMachineRepository machineRepository,
-    ICurrentUser currentUser
+    ICurrentUser currentUser,
+    IUnitOfWork unitOfWork
 )
 {
     public async Task<Result<HourRecordEntity>> ExecuteAsync(CheckInRequest request)
     {
-        Console.WriteLine(currentUser.Session);
         var machine = await machineRepository.GetByIdAsync(request.MachineId);
 
         if (machine is null)
@@ -27,10 +27,7 @@ public class CheckInUseCase(
             return Result<HourRecordEntity>.Failure(HourRecordErrors.ForbiddenCompany);
         }
 
-        var openRecord = await repository.GetOpenRecordAsync(
-            currentUser.Session.Id,
-            request.MachineId
-        );
+        var openRecord = await repository.GetOpenRecordAsync(currentUser.Session.Id, request.MachineId);
 
         if (openRecord is not null)
         {
@@ -52,6 +49,8 @@ public class CheckInUseCase(
             UpdatedAt = now,
         };
 
-        return Result<HourRecordEntity>.Success(await repository.CreateAsync(record));
+        var created = await repository.CreateAsync(record);
+        await unitOfWork.CommitAsync();
+        return Result<HourRecordEntity>.Success(created);
     }
 }

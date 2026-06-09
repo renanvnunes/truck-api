@@ -6,7 +6,11 @@ using MachineEntity = TruckApi.Infrastructure.Database.Entities.Machine;
 
 namespace TruckApi.Features.Machine.UseCases;
 
-public class UpdateMachineUseCase(IMachineRepository repository, ICurrentUser currentUser)
+public class UpdateMachineUseCase(
+    IMachineRepository repository,
+    ICurrentUser currentUser,
+    IUnitOfWork unitOfWork
+)
 {
     public async Task<Result<MachineEntity>> ExecuteAsync(string id, UpdateMachineRequest request)
     {
@@ -34,14 +38,10 @@ public class UpdateMachineUseCase(IMachineRepository repository, ICurrentUser cu
 
         if (request.Code is not null && request.Code != machine.Code)
         {
-            if (
-                await repository.CodeExistsForOtherMachineInCompanyAsync(
-                    request.Code,
-                    machine.CompanyId,
-                    id
-                )
-            )
+            if (await repository.CodeExistsForOtherMachineInCompanyAsync(request.Code, machine.CompanyId, id))
+            {
                 return Result<MachineEntity>.Failure(MachineErrors.CodeAlreadyExistsInCompany);
+            }
 
             machine.Code = request.Code;
         }
@@ -50,18 +50,22 @@ public class UpdateMachineUseCase(IMachineRepository repository, ICurrentUser cu
         {
             machine.Type = Enum.Parse<MachineType>(request.Type, ignoreCase: true);
         }
+
         if (request.Brand is not null)
         {
             machine.Brand = request.Brand;
         }
+
         if (request.Model is not null)
         {
             machine.Model = request.Model;
         }
+
         if (request.Year is not null)
         {
             machine.Year = request.Year.Value;
         }
+
         if (request.Plate is not null)
         {
             machine.Plate = request.Plate;
@@ -70,7 +74,7 @@ public class UpdateMachineUseCase(IMachineRepository repository, ICurrentUser cu
         machine.UpdatedAt = DateTimeOffset.UtcNow;
 
         await repository.UpdateAsync(machine);
-
+        await unitOfWork.CommitAsync();
         return Result<MachineEntity>.Success(machine);
     }
 }

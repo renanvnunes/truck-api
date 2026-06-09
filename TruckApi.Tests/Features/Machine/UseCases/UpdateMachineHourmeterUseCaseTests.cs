@@ -8,11 +8,12 @@ public class UpdateMachineHourmeterUseCaseTests
 {
     private readonly IMachineRepository _repo = Substitute.For<IMachineRepository>();
     private readonly ICurrentUser _currentUser = Substitute.For<ICurrentUser>();
+    private readonly IUnitOfWork _unitOfWork = Substitute.For<IUnitOfWork>();
     private readonly UpdateMachineHourmeterUseCase _sut;
 
     public UpdateMachineHourmeterUseCaseTests()
     {
-        _sut = new UpdateMachineHourmeterUseCase(_repo, _currentUser);
+        _sut = new UpdateMachineHourmeterUseCase(_repo, _currentUser, _unitOfWork);
     }
 
     private static MachineEntity MakeMachine(decimal currentHourmeter = 100m, string companyId = "company-1")

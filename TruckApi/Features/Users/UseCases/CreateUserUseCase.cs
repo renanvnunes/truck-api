@@ -7,7 +7,11 @@ using TruckApi.Infrastructure.Database.Entities;
 
 namespace TruckApi.Features.Users.UseCases;
 
-public class CreateUserUseCase(IUserRepository repository, ICompanyRepository companyRepository)
+public class CreateUserUseCase(
+    IUserRepository repository,
+    ICompanyRepository companyRepository,
+    IUnitOfWork unitOfWork
+)
 {
     public async Task<Result<User>> ExecuteAsync(CreateUserRequest request)
     {
@@ -18,8 +22,7 @@ public class CreateUserUseCase(IUserRepository repository, ICompanyRepository co
 
         if (request.CompanyId is not null)
         {
-            var companyExists = await companyRepository.ExistsAsync(request.CompanyId);
-            if (!companyExists)
+            if (!await companyRepository.ExistsAsync(request.CompanyId))
             {
                 return Result<User>.Failure(CompanyErrors.NotFound);
             }
@@ -46,6 +49,8 @@ public class CreateUserUseCase(IUserRepository repository, ICompanyRepository co
             UpdatedAt = now,
         };
 
-        return Result<User>.Success(await repository.CreateAsync(user));
+        var created = await repository.CreateAsync(user);
+        await unitOfWork.CommitAsync();
+        return Result<User>.Success(created);
     }
 }

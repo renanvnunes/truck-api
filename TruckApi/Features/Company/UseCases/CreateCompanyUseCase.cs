@@ -5,7 +5,7 @@ using CompanyEntity = TruckApi.Infrastructure.Database.Entities.Company;
 
 namespace TruckApi.Features.Company.UseCases;
 
-public class CreateCompanyUseCase(ICompanyRepository repository)
+public class CreateCompanyUseCase(ICompanyRepository repository, IUnitOfWork unitOfWork)
 {
     public async Task<Result<CompanyEntity>> ExecuteAsync(CreateCompanyRequest request)
     {
@@ -24,6 +24,8 @@ public class CreateCompanyUseCase(ICompanyRepository repository)
             UpdatedAt = now,
         };
 
-        return Result<CompanyEntity>.Success(await repository.CreateAsync(company));
+        var created = await repository.CreateAsync(company);
+        await unitOfWork.CommitAsync();
+        return Result<CompanyEntity>.Success(created);
     }
 }

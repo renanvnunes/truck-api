@@ -11,12 +11,15 @@ namespace TruckApi.Features.Machine.UseCases;
 public class CreateMachineUseCase(
     IMachineRepository machineRepository,
     ICompanyRepository companyRepository,
-    ICurrentUser currentUser
+    ICurrentUser currentUser,
+    IUnitOfWork unitOfWork
 )
 {
     public async Task<Result<MachineEntity>> ExecuteAsync(CreateMachineRequest request)
     {
-        var companyId = currentUser.Session.IsAdmin() ? request.CompanyId : currentUser.Session.CompanyId;
+        var companyId = currentUser.Session.IsAdmin()
+            ? request.CompanyId
+            : currentUser.Session.CompanyId;
 
         if (companyId is null)
         {
@@ -54,6 +57,8 @@ public class CreateMachineUseCase(
             UpdatedAt = now,
         };
 
-        return Result<MachineEntity>.Success(await machineRepository.CreateAsync(machine));
+        var created = await machineRepository.CreateAsync(machine);
+        await unitOfWork.CommitAsync();
+        return Result<MachineEntity>.Success(created);
     }
 }

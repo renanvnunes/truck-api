@@ -8,11 +8,12 @@ public class UpdateMachineUseCaseTests
 {
     private readonly IMachineRepository _repo = Substitute.For<IMachineRepository>();
     private readonly ICurrentUser _currentUser = Substitute.For<ICurrentUser>();
+    private readonly IUnitOfWork _unitOfWork = Substitute.For<IUnitOfWork>();
     private readonly UpdateMachineUseCase _sut;
 
     public UpdateMachineUseCaseTests()
     {
-        _sut = new UpdateMachineUseCase(_repo, _currentUser);
+        _sut = new UpdateMachineUseCase(_repo, _currentUser, _unitOfWork);
     }
 
     private static MachineEntity MakeMachine(string id = "machine-1", string companyId = "company-1")

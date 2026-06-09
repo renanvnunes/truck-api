@@ -22,15 +22,20 @@ public static class ApplicationExtensions
 {
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        services.AddOpenApi("v1", options =>
-        {
-            options.AddDocumentTransformer((doc, _, _) =>
+        services.AddOpenApi(
+            "v1",
+            options =>
             {
-                doc.Info.Title = "TruckApi";
-                doc.Info.Version = "v1";
-                return Task.CompletedTask;
-            });
-        });
+                options.AddDocumentTransformer(
+                    (doc, _, _) =>
+                    {
+                        doc.Info.Title = "TruckApi";
+                        doc.Info.Version = "v1";
+                        return Task.CompletedTask;
+                    }
+                );
+            }
+        );
         services.ConfigureHttpJsonOptions(options =>
         {
             options.SerializerOptions.Converters.Add(new TrimmingStringJsonConverter());
@@ -39,6 +44,8 @@ public static class ApplicationExtensions
             options.SerializerOptions.PropertyNameCaseInsensitive = true;
             options.SerializerOptions.UnmappedMemberHandling = JsonUnmappedMemberHandling.Disallow;
         });
+
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         services.AddScoped<ICompanyRepository, CompanyRepository>();
         services.AddScoped<CreateCompanyUseCase>();

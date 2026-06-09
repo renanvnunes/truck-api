@@ -5,7 +5,11 @@ using TruckApi.Infrastructure.Database.Entities;
 
 namespace TruckApi.Features.Users.UseCases;
 
-public class UpdateUserUseCase(IUserRepository repository, ICurrentUser currentUser)
+public class UpdateUserUseCase(
+    IUserRepository repository,
+    ICurrentUser currentUser,
+    IUnitOfWork unitOfWork
+)
 {
     public async Task<Result<User>> ExecuteAsync(string id, UpdateUserRequest request)
     {
@@ -72,7 +76,7 @@ public class UpdateUserUseCase(IUserRepository repository, ICurrentUser currentU
         user.UpdatedAt = DateTimeOffset.UtcNow;
 
         await repository.UpdateAsync(user);
-
+        await unitOfWork.CommitAsync();
         return Result<User>.Success(user);
     }
 }

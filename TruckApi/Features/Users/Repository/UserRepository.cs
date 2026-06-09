@@ -7,71 +7,64 @@ namespace TruckApi.Features.Users.Repository;
 
 public class UserRepository(AppDbContext db) : IUserRepository
 {
-    public async Task<User> CreateAsync(User user)
+    public Task<User> CreateAsync(User user)
     {
         db.Users.Add(user);
-        await db.SaveChangesAsync();
-        return user;
+        return Task.FromResult(user);
     }
 
-    public async Task<bool> WhatsappExistsAsync(string whatsapp)
-    {
-        return await db.Users.AnyAsync(u => u.Whatsapp == whatsapp);
-    }
+    public async Task<bool> WhatsappExistsAsync(string whatsapp) =>
+        await db.Users.AnyAsync(u => u.Whatsapp == whatsapp);
 
     public async Task<User[]> GetAllAsync(string? cursor, int limit, string? companyId)
     {
         var query = db.Users.AsQueryable();
 
         if (companyId is not null)
+        {
             query = query.Where(u => u.CompanyId == companyId);
+        }
 
         if (cursor is not null)
+        {
             query = query.Where(u => string.Compare(u.Id, cursor) > 0);
+        }
 
         return await query.OrderBy(u => u.Id).Take(limit).ToArrayAsync();
     }
 
-    public async Task<User?> GetByIdAsync(string id)
-    {
-        return await db.Users.FindAsync(id);
-    }
+    public async Task<User?> GetByIdAsync(string id) =>
+        await db.Users.FindAsync(id);
 
-    public async Task<User?> GetByWhatsappAsync(string whatsapp)
-    {
-        return await db.Users.FirstOrDefaultAsync(u => u.Whatsapp == whatsapp);
-    }
+    public async Task<User?> GetByWhatsappAsync(string whatsapp) =>
+        await db.Users.FirstOrDefaultAsync(u => u.Whatsapp == whatsapp);
 
-    public async Task UpdateAsync(User user)
+    public Task UpdateAsync(User user)
     {
         db.Users.Update(user);
-        await db.SaveChangesAsync();
+        return Task.CompletedTask;
     }
 
     public async Task RemoveAsync(string id)
     {
         var user = await db.Users.FindAsync(id);
-        if (user != null)
+        if (user is not null)
         {
             db.Users.Remove(user);
-            await db.SaveChangesAsync();
         }
     }
 
-    public async Task<bool> WhatsappExistsForOtherUserAsync(string whatsapp, string excludeId)
-    {
-        return await db.Users.AnyAsync(u => u.Whatsapp == whatsapp && u.Id != excludeId);
-    }
+    public async Task<bool> WhatsappExistsForOtherUserAsync(string whatsapp, string excludeId) =>
+        await db.Users.AnyAsync(u => u.Whatsapp == whatsapp && u.Id != excludeId);
 
     public async Task UpdatePasswordAsync(string userId, string newPasswordHash)
     {
         var user = await db.Users.FindAsync(userId);
-        if (user != null)
+        if (user is not null)
         {
             user.Password = newPasswordHash;
             user.UpdatedAt = DateTimeOffset.UtcNow;
             db.Users.Update(user);
-            await db.SaveChangesAsync();
         }
     }
 }

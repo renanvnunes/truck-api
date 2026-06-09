@@ -6,11 +6,12 @@ namespace TruckApi.Tests.Features.Machine.UseCases;
 public class DeleteMachineUseCaseTests
 {
     private readonly IMachineRepository _repo = Substitute.For<IMachineRepository>();
+    private readonly IUnitOfWork _unitOfWork = Substitute.For<IUnitOfWork>();
     private readonly DeleteMachineUseCase _sut;
 
     public DeleteMachineUseCaseTests()
     {
-        _sut = new DeleteMachineUseCase(_repo);
+        _sut = new DeleteMachineUseCase(_repo, _unitOfWork);
     }
 
     private static MachineEntity MakeMachine()

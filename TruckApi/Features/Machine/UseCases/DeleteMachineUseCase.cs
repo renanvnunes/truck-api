@@ -3,7 +3,7 @@ using TruckApi.Features.Machine.Interfaces;
 
 namespace TruckApi.Features.Machine.UseCases;
 
-public class DeleteMachineUseCase(IMachineRepository repository)
+public class DeleteMachineUseCase(IMachineRepository repository, IUnitOfWork unitOfWork)
 {
     public async Task<Result<bool>> ExecuteAsync(string id)
     {
@@ -15,7 +15,7 @@ public class DeleteMachineUseCase(IMachineRepository repository)
         }
 
         await repository.RemoveAsync(id);
-
+        await unitOfWork.CommitAsync();
         return Result<bool>.Success(true);
     }
 }

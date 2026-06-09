@@ -17,16 +17,22 @@ public class RefreshTokenUseCase(
     {
         var rotated = await refreshTokenService.ValidateAndRotateAsync(request.RefreshToken);
         if (rotated is null)
+        {
             return Result<RefreshTokenResponse>.Failure(AuthErrors.InvalidRefreshToken);
+        }
 
         var (userId, newRefreshToken) = rotated.Value;
 
         var user = await userRepository.GetByIdAsync(userId);
         if (user is null)
+        {
             return Result<RefreshTokenResponse>.Failure(AuthErrors.UserNotFound);
+        }
 
         if (!user.IsActive)
+        {
             return Result<RefreshTokenResponse>.Failure(AuthErrors.UserInactive);
+        }
 
         var accessToken = tokenService.Generate(user, out var expiration);
 

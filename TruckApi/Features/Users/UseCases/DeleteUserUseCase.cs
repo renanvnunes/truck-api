@@ -4,7 +4,11 @@ using TruckApi.Infrastructure.Database.Entities;
 
 namespace TruckApi.Features.Users.UseCases;
 
-public class DeleteUserUseCase(IUserRepository repository, ICurrentUser currentUser)
+public class DeleteUserUseCase(
+    IUserRepository repository,
+    ICurrentUser currentUser,
+    IUnitOfWork unitOfWork
+)
 {
     public async Task<Result<User>> ExecuteAsync(string id)
     {
@@ -21,7 +25,7 @@ public class DeleteUserUseCase(IUserRepository repository, ICurrentUser currentU
         }
 
         await repository.RemoveAsync(id);
-
+        await unitOfWork.CommitAsync();
         return Result<User>.Success(user);
     }
 }
